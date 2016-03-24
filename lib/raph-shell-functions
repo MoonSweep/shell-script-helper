@@ -1,0 +1,165 @@
+# Raph's Shell Functions v1.0
+# Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+# Licence: GPL-3+
+
+# Please read the raph-shell-functions(3) manpage for documentation
+
+#
+# FUNCTIONS
+#
+
+
+# Exits with an error if the script is not run as root
+root_only () {
+  if [ "$(id -u)" != "0" ] ; then
+    print_error "This script must be run as root, aborting."
+    exit 1
+  fi
+}
+
+
+# Locks the script, ensuring only one instance is run at a time
+lock_script () {
+  local LOCK_FILE
+  LOCK_FILE="/run/lock/`basename $0`.pid"
+  if [ -e "$LOCK_FILE" ] ; then
+    ps `cat "$LOCK_FILE"` > /dev/null
+    if [ $? -ne 0 ] ; then
+      printf "Deleting stale lock file %s\n" "$LOCK_FILE"
+      rm -f "$LOCK_FILE"
+    else
+      print_error "Script already running with PID `cat "$LOCK_FILE"`, aborting."
+      exit 1
+    fi
+  fi
+  print_debug "Creating lock file $LOCK_FILE with PID $$"
+  echo $$ > "$LOCK_FILE"
+}
+
+
+# Unlocks the script
+unlock_script () {
+  local LOCK_FILE
+  LOCK_FILE="/run/lock/`basename $0`.pid"
+  if [ -e "$LOCK_FILE" ] ; then
+    if [ `cat $LOCK_FILE` -eq $$ ] ; then
+      print_debug "Deleting lock file $LOCK_FILE with PID $$"
+      rm -f "$LOCK_FILE"
+    fi
+  fi
+}
+
+
+# Enables the verbose mode
+enable_verbose () {
+  VERBOSE=1
+  print_debug "Verbose mode enabled"
+}
+
+
+# Enables the debug mode
+enable_debug () {
+  DEBUG=1
+  enable_verbose
+  print_debug "Debug mode enabled"
+}
+
+
+# Prints a string on STDOUT only if the VERBOSE variable is equal to 1
+# Args: exactly one string
+print_verbose () {
+  [ $VERBOSE -eq 1 ] && printf "%-8s%s\n" "[INFO]" "$1"
+}
+
+
+# Desc:	Prints a string on STDOUT only if the DEBUG variable is equal to 1.
+# Args:	exactly one string
+print_debug () {
+  [ $DEBUG -eq 1 ] && printf "%-8s%s\n" "[DEBUG]" "$1"
+}
+
+
+# Prints a string on STDERR with the [ERROR] prefix.
+# Args:	exactly one string
+print_error () {
+  printf "%-8s%s\n" "[ERROR]" "$1" 1>&2
+}
+
+
+# Helper  to display options in the help message
+# Args:	Exactly two strings (switch and description, e.g. "-v" "Verbose mode")
+print_option() {
+  printf "  %-20s%s\n" "$1" "$2"
+}
+
+
+# Deletes one or more files, with some checks and feedback
+# Args:	One or more filenames
+delete_files () {
+  local FILE_TO_DELETE
+  for FILE_TO_DELETE in "$@" ; do
+    print_verbose "Deleting file $FILE_TO_DELETE..."
+    rm -f "$FILE_TO_DELETE" || print_error "Couldn't delete file $FILE_TO_DELETE"
+  done
+}
+
+
+# Prints a string and exits with a return code of  1
+# Args:	Exactly one string
+die () {
+  print_error "$1, aborting."
+  exit 1
+}
+
+
+# Automatically called when the script exits
+quit () {
+  type on_exit > /dev/null 2>&1 && on_exit
+  unlock_script
+}
+
+
+#
+# TRAPS
+#
+
+# Call the die function if the script is killed
+trap 'die "SIGINT caught (interrupt from keyboard)"' 2
+trap 'die "SIGPIPE caught (write to pipe with no readers)"' 13
+trap 'die "SIGTERM caught (termination signal)"' 15
+
+# Call the quit function when the script exits
+trap 'quit' 0
+
+
+#
+# VERBOSITY
+#
+
+# These variables are meant to be changed with switches
+VERBOSE=0
+DEBUG=0
+
+
+#
+# EXAMPLES
+#
+
+# Print help
+#print_help () {
+#  printf "Usage: %s [OPTIONS] [ARGS...]\n" "`basename $0`"
+#  printf "\nOPTIONS:\n"
+#  print_option "-v" "Verbose mode"
+#  print_option "-d" "Debug mode (implies -v)"
+#  print_option "-h" "Print this help message"
+#}
+
+# Options processing
+#while getopts "vdh" OPTION ; do
+#  case $OPTION in
+#    v) enable_verbose ;;
+#    d) enable_debug ;;
+#    h) print_help ; exit 0 ;;
+#    *) print_help ; exit 1 ;;
+#  esac
+#done ; shift $(($OPTIND-1))

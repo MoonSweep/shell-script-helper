@@ -1,0 +1,54 @@
+.\" (C) Copyright 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+
+.TH CREATE-RAPH-SHELL-SCRIPT.CONF 5 "2016-03-24"
+
+.SH NAME
+create-raph-shell-script.conf \- \fBcreate-raph-shell-script\fR configuration
+file
+
+.SH SYNOPSIS
+.TP
+.B /etc/create-raph-shell-script.conf
+system-wide
+.TP
+.B ~/.create-raph-shell-script.conf
+per-user
+
+.SH DESCRIPTION
+The \fIcreate-raph-shell-script.conf\fR configuration files are sourced by the
+\fBcreate-raph-shell-script\fR shell script to set some default variables.
+.PP
+The system-wide configuration file overrides the script defaults; the per-user
+configuration file overrides the system-wide configuration file; and finally,
+the command-line options override the per-user configuration file.
+
+.SH VARIABLES
+The following variables are used in the script:
+.TP
+.BR VERBOSE
+Set to 1 to enable verbose mode. Defaults to 0.
+.TP
+.B DEBUG
+Set to 1 to enable debug mode (implies verbose mode). Defaults to 0.
+.TP
+.B CRSS_FULLNAME
+Your full name. Defaults to $USER.
+.TP
+.B CRSS_EMAIL
+Your e-mail address. Defaults to $USER@hostname.
+
+.SH EXAMPLE
+.nf
+.RS
+# Configuration file for create-raph-shell-script
+# See the create-raph-shell-script.conf(5) manpage for details
+
+VERBOSE=1
+DEBUG=0
+CRSS_FULLNAME="John Doe"
+CRSS_EMAIL="jdoe@bar.com"
+.RE
+.fi
+
+.SH SEE ALSO
+.BR create-raph-shell-script (1).

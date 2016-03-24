@@ -1,0 +1,77 @@
+#! /bin/sh
+
+# raph-shell-functions-demo v1.0
+# Demonstration script for Raph's Shell Functions
+# Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+
+# Source Raph's Shell Functions
+. /lib/raph-shell-functions
+
+
+#
+# Functions
+#
+
+on_exit () {
+  if [ -e "$TEMP_FILE" ] ; then
+    delete_files "$TEMP_FILE"
+  fi
+}
+
+print_usage () {
+  printf "Usage: %s [OPTIONS] [ARGS...]\n" "`basename $0`"
+  printf "This is a demonstration script for raph-shell-functions.\n"
+  printf "\nOPTIONS:\n"
+  print_option "-v" "Verbose mode"
+  print_option "-d" "Debug mode"
+  print_option "-l" "Lock script"
+  print_option "-r" "Root-only"
+  print_option "-h" "Print this help message"
+  printf "\nARGS:\n"
+  printf "Anything you want, they're just printed.\n"
+}
+
+
+#
+# Options processing
+#
+
+while getopts "vdlrh" OPTION ; do
+  case $OPTION in
+    v) enable_verbose ;;
+    d) enable_debug ;;
+    l) lock_script ;;
+    r) root_only ;;
+    h) print_usage ; exit 0 ;;
+    *) print_usage ; exit 1 ;;
+  esac
+done ; shift $(($OPTIND-1))
+
+
+#
+# MAIN
+#
+
+if [ $# -ne 0 ] ; then
+  print_debug "Arguments remaining after option processing:"
+  COUNTER=0
+  for ARG in "$@" ; do
+    print_debug "\$$COUNTER = $ARG"
+    COUNTER=$((COUNTER+1))
+  done
+else
+  print_debug "Options processed, no argument left."
+fi
+
+TEMP_FILE="/tmp/`basename $0`.$$"
+print_verbose "Creating temporary file $TEMP_FILE"
+touch "$TEMP_FILE"
+
+printf "Press Ctrl-C to test graceful abort, or let the script finnish by itself.\n"
+
+COUNTER=10
+while [ $COUNTER -gt 0 ] ; do
+  printf "%s... " "$COUNTER"
+  sleep 1
+  COUNTER=$((COUNTER-1))
+done ; printf "%s.\n" "$COUNTER"

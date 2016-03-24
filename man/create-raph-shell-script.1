@@ -1,0 +1,55 @@
+.\" (C) Copyright 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+
+.TH CREATE-RAPH-SHELL-SCRIPT 1 "2016-03-24"
+
+.SH NAME
+create-raph-shell-script \- program to create a shell script stub which uses raph-shell-functions
+
+.SH SYNOPSIS
+\fBcreate-raph-shell-script\fR [\fB\-vdh\fR] [\fB\-f\fR \fIFULL_NAME\fR]
+[\fB-e\fR \fIEMAIL_ADDRESS\fR] \fISCRIPT-NAME\fR
+
+.SH DESCRIPTION
+\fBcreate-raph-shell-script\fR is a program to automatically create a shell
+script stub (and its associated manpages), which uses the
+\fBraph-shell-functions\fR shell library.
+
+.SH OPTIONS
+Options must be specified before arguments.
+.TP
+.BR \-v
+Enables verbose mode.
+.TP
+.BR \-d
+Enables debug mode (implies verbose mode).
+.TP
+.BR \-f " \fIFULL_NAME\fR"
+Your full name.
+.TP
+.BR \-e " \fIEMAIL_ADDRESS\fR"
+Your e-mail address.
+.TP
+.BR \-h
+Show summary of options.
+
+.SH FILES
+A system-wide \fI/etc/create-raph-shell-script.conf\fR and a per-user
+\fI~/.create-raph-shell-script.conf\fR are parsed to set default variables. See
+the \fBcreate-raph-shell-script.conf\fR(5) manpage for details.
+
+.SH NOTES
+\fBcreate-raph-shell-script\fR will abort if a file it tries to create already exists.
+
+.SH EXAMPLE
+Create a script called \fBfoo\fR in /tmp, with John Doe as a name and jdoe@bar.com as e-mail address:
+.PP
+.RS
+create-raph-shell-script -f "John Doe" -e jdoe@bar.com /tmp/foo
+.RE
+.PP
+This will create three files: a shell script stub in \fI/tmp/foo\fR, a manpage
+stub for the script in \fI/tmp/foo.1\fR, and a manpage stub for a config file
+in \fI/tmp/foo.conf.5\fR.
+
+.SH SEE ALSO
+.BR create-raph-shell-script.conf (5).

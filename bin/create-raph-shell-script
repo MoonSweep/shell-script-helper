@@ -1,0 +1,294 @@
+#! /bin/sh
+
+# create-raph-shell-script v1.0
+# Create a shell script stub using Raph's Shell Functions
+# Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+
+# Source Raph's Shell Functions
+. /lib/raph-shell-functions
+
+
+#
+# Variables
+#
+
+SYSTEM_CONFIG_FILE="/etc/`basename $0`.conf"
+USER_CONFIG_FILE="/home/$USER/.`basename $0`.conf"
+CRSS_FULLNAME="$USER"
+CRSS_EMAIL="$USER@`hostname -f`"
+
+
+#
+# Functions
+#
+
+print_usage () {
+  printf "Usage: %s [OPTIONS] FILENAME\n" "`basename $0`"
+  printf "This script creates a shell script stub using raph-shell-functions.\n"
+  printf "\nOPTIONS:\n"
+  print_option "-v" "Verbose mode"
+  print_option "-d" "Debug mode"
+  print_option "-f FULL_NAME" "Your full name"
+  print_option "-e EMAIL_ADDRESS" "Your e-mail address"
+  print_option "-h" "Print this help message"
+  printf "\nFILENAME:\n"
+  printf "The file name of the script you want to create.\n"
+}
+
+
+#
+# Config files
+#
+
+[ -e "$SYSTEM_CONFIG_FILE" ] && . "$SYSTEM_CONFIG_FILE"
+[ -e "$USER_CONFIG_FILE" ] && . "$USER_CONFIG_FILE"
+
+
+#
+# Options processing
+#
+
+while getopts "vdf:e:h" OPTION ; do
+  case $OPTION in
+    v) enable_verbose ;;
+    d) enable_debug ;;
+    f) CRSS_FULLNAME="$OPTARG" ;;
+    e) CRSS_EMAIL="$OPTARG" ;;
+    h) print_usage ; exit 0 ;;
+    *) print_usage ; exit 1 ;;
+  esac
+done ; shift $(($OPTIND-1))
+
+
+#
+# Checks
+#
+
+[ $# -ne 1 ] && die "Please provide exactly one argument"
+
+
+#
+# MAIN
+#
+
+STUB_NAME="$1"
+STUB_BASENAME="`basename $STUB_NAME`"
+CONFIG_FILE_BASENAME="$STUB_BASENAME.conf"
+[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
+
+
+#
+# Script stub
+#
+
+printf "Creating shell script stub in $STUB_NAME...\n"
+[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
+
+cat << EOF > "$STUB_NAME"
+#! /bin/sh
+
+# $STUB_BASENAME v0.1
+# Description
+# Copyright (c) `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
+
+# Source Raph's Shell Functions
+. /lib/raph-shell-functions
+
+
+#
+# Variables
+#
+
+SYSTEM_CONFIG_FILE="/etc/\`basename \$0\`.conf"
+USER_CONFIG_FILE="/home/\$USER/.\`basename \$0\`.conf"
+
+
+#
+# Functions
+#
+
+#on_exit () {
+#  # Do some cleanup
+#  print_verbose "Cleaning up..."
+#  delete_files \$TEMP_FILE \$OTHER_TEMP_FILE
+#  # Do something else
+#  ...
+#}
+
+print_usage () {
+  printf "Usage: %s [OPTIONS] [ARGS...]\n" "\`basename \$0\`"
+  printf "Script description.\n"
+  printf "\nOPTIONS:\n"
+  print_option "-v" "Verbose mode"
+  print_option "-d" "Debug mode"
+  print_option "-h" "Print this help message"
+  printf "\nARGS:\n"
+  printf "Arguments description.\n"
+}
+
+
+#
+# Config files
+#
+
+[ -e "\$SYSTEM_CONFIG_FILE" ] && . "\$SYSTEM_CONFIG_FILE"
+[ -e "\$USER_CONFIG_FILE" ] && . "\$USER_CONFIG_FILE"
+
+
+#
+# Options processing
+#
+
+while getopts "vdh" OPTION ; do
+  case \$OPTION in
+    v) enable_verbose ;;
+    d) enable_debug ;;
+    h) print_usage ; exit 0 ;;
+    *) print_usage ; exit 1 ;;
+  esac
+done ; shift \$((\$OPTIND-1))
+
+
+#
+# Checks
+#
+
+# root_only
+# lock_script
+#[ \$# -lt 1 ] && die "Please provide at least one argument"
+
+
+#
+# MAIN
+#
+
+# Do some things
+EOF
+
+printf "Adding executable bit...\n"
+chmod +x "$STUB_NAME"
+
+
+#
+# Script manpage stub
+#
+
+SCRIPT_MANPAGE_NAME="$STUB_NAME.1"
+printf "Creating manual page for script in $SCRIPT_MANPAGE_NAME...\n"
+[ -e "$SCRIPT_MANPAGE_NAME" ] && die "File \"$SCRIPT_MANPAGE_NAME\" already exists"
+cat << EOF > "$SCRIPT_MANPAGE_NAME"
+.\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
+
+.TH `echo $STUB_BASENAME | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
+
+.SH NAME
+$STUB_BASENAME \- program to do something
+
+.SH SYNOPSIS
+\\fB$STUB_BASENAME\\fR [\\fB\\-vdh\\fR] [\\fIARGS\\fR]...
+
+.SH DESCRIPTION
+\\fB$STUB_BASENAME\\fR is a shell script that...
+
+.SH OPTIONS
+Options must be specified before arguments.
+.TP
+.BR \\-v
+Enables verbose mode.
+.TP
+.BR \\-d
+Enables debug mode (implies verbose mode).
+.TP
+.BR \\-h
+Show summary of options.
+
+.SH FILES
+A system-wide \\fI/etc/$CONFIG_FILE_BASENAME\\fR and a per-user
+\\fI~/.$CONFIG_FILE_BASENAME\\fR are parsed to set default variables. See the
+\\fB$CONFIG_FILE_BASENAME\\fR(5) manpage for details.
+
+.SH NOTES
+Important: bla bla bla.
+
+.SH EXAMPLE
+Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/foo.txt" in verbose mode:
+.PP
+.RS
+$STUB_BASENAME \-v "/home/user/foo.txt"
+.RE
+.PP
+Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/bar.txt" in debug mode:
+.PP
+.RS
+$STUB_BASENAME \-d "/home/user/bar.txt"
+.RE
+
+.SH SEE ALSO
+.BR $CONFIG_FILE_BASENAME (5).
+EOF
+
+
+#
+# Config file manpage stub
+#
+
+CONFIG_FILE_MANPAGE_NAME="$STUB_NAME.conf.5"
+printf "Creating manual page for configuration file in $CONFIG_FILE_MANPAGE_NAME...\n"
+[ -e "$CONFIG_FILE_MANPAGE_NAME" ] && die "File \"$CONFIG_FILE_MANPAGE_NAME\" already exists"
+cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
+.\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
+
+.TH `echo $CONFIG_FILE_BASENAME | tr [:lower:] [:upper:]` 5 "`date --rfc-3339=date`"
+
+.SH NAME
+$CONFIG_FILE_BASENAME \- \\fB$STUB_BASENAME\\fR configuration file
+
+.SH SYNOPSIS
+.TP
+.B /etc/$CONFIG_FILE_BASENAME
+system-wide
+.TP
+.B ~/.$CONFIG_FILE_BASENAME
+per-user
+
+.SH DESCRIPTION
+The \\fI$CONFIG_FILE_BASENAME\\fR configuration files are sourced by the
+\\fB$STUB_BASENAME\\fR shell script to set some default variables.
+.PP
+The system-wide configuration file overrides the script defaults; the per-user
+configuration file overrides the system-wide configuration file; and finally,
+the command-line options override the per-user configuration file.
+
+.SH VARIABLES
+The following variables are used in the script:
+.TP
+.B VERBOSE
+Set to 1 to enable verbose mode. Defaults to 0.
+.TP
+.B DEBUG
+Set to 1 to enable debug mode (implies verbose mode). Defaults to 0.
+
+.SH NOTES
+Important: bla bla bla.
+
+.SH EXAMPLE
+.nf
+.RS
+# Configuration file for $STUB_BASENAME
+# See the $CONFIG_FILE_BASENAME(5) manpage for details
+
+VERBOSE=1
+DEBUG=0
+.RE
+.fi
+
+.SH SEE ALSO
+.BR $STUB_BASENAME (1).
+EOF
+
+
+#
+# End
+#
+
+printf "All done.\n"

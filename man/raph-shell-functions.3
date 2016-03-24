@@ -1,0 +1,134 @@
+.\" (C) Copyright 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+
+.TH RAPH-SHELL-FUNCTIONS 3 "2016-03-23"
+
+.SH NAME
+raph-shell-functions \- collection of shell functions commonly used in scripts
+
+.SH SYNOPSIS
+.BR . " " /lib/raph-shell-functions
+
+.SH DESCRIPTION
+.BR raph-shell-functions
+is a collection of functions commonly used in shell scripts. It's meant to be
+sourced at the beginning of a shell script, so that its functions can be called
+when needed.
+
+.SH FUNCTIONS
+.TP
+.BR root_only
+Exits with an error if the script is not run as root. Generally you want to call
+this function at the very beginning of the script. 
+.TP
+.BR lock_script	
+Locks the script, ensuring only one instance is run at a time. You want to call
+this function at the beginning of your script if it must not be run more than
+once simultaneously.
+.TP
+.BR unlock_script
+Unlocks the script. It's automatically called when the script exits (see
+\fINOTES\fR).
+.TP
+.BR enable_verbose
+Enables the verbose mode. Normally you want to call it during options
+processing.
+.TP
+.BR enable_debug
+Enables the debug mode (implies verbose mode). Normally you want to call it
+during options processing.
+.TP
+.BR print_verbose " " \fIMESSAGE\fR
+Prints MESSAGE on STDOUT only if the VERBOSE variable is equal to 1. It
+accepts exactly one string as argument.
+.TP
+.BR print_debug " " \fIMESSAGE\fR
+Prints MESSAGE on STDOUT with the [DEBUG] prefix, and only if the DEBUG
+variable is equal to 1. It accepts exactly one string as argument.
+.TP
+.BR print_error " " \fIMESSAGE\fR
+Prints MESSAGE on STDERR with the [ERROR] prefix. It accepts exactly one string
+as argument.
+.TP
+.BR print_option " " \fISWITCH\fR " " \fIDESCRIPTION\fR
+Helper to display options in the help message. It accepts exactly two strings
+as arguments: the switch (e.g. "-v") and its description (e.g. "Verbose mode").
+.TP
+.BR delete_files " " \fIFILES\fR...
+Deletes one or more files, with some checks and feedback in verbose mode. It
+accepts one or more filenames as arguments. Don't forget to enclose them is
+double-quotes if they contain spaces.
+.TP
+.BR die " " \fIMESSAGE\fR
+Prints \fIMESSAGE\fR and exits with a return code of 1. It's also automatically
+called when the script receives one of the INT, PIPE or TERM signals (see
+\fINOTES\fR). It accepts exactly one string as argument.
+
+.SH CONFORMING TO
+Efforts are made to make this library POSIX-compliant, so that the scripts using
+it can be run with either bash or dash, but it may not be perfect.
+
+.SH NOTES
+Exiting the script, whether by using the \fBexit\fR builtin or simply by
+reaching the end of the script, will trigger a hidden function called
+\fBquit\fR.
+.PP
+By default this function will only unlock the script. If you need to do other
+things (like removing temporary files), you must write a function called
+\fBon_exit\fR in your script, for example:
+.PP
+.nf
+.RS
+on_exit () {
+  # Do some cleanup
+  print_verbose "Cleaning up..."
+  delete_files "$TEMP_FILE" "$OTHER_TEMP_FILE"
+  # Do something else
+  ...
+}
+.RE
+.fi
+.PP
+In addition, the three signals \fBSIGINT\fR (interrupt by keyboard, e.g.
+pressing Ctrl-C), \fBSIGPIPE\fR (broken pipe) and \fBSIGTERM\fR (terminate,
+e.g.  with a \fBkill\fR command) are trapped, and will trigger the \fBdie\fR
+function, which will itself trigger the \fBquit\fR function. It should make
+your scripts more resilient to errors by automatically cleaning up any
+leftovers in case something goes wrong.
+
+.SH EXAMPLE
+TODO: Add an example for each function
+.PP
+Example of a \fBprint_usage\fR function:
+.PP
+.nf
+.RS
+# Print usage
+print_usage () {
+  printf "Usage: %s [OPTIONS] [ARGS...]\\n" "`basename $0`"
+  printf "\\nOPTIONS:\\n"
+  print_option "-v" "Verbose mode"
+  print_option "-d" "Debug mode (implies -v)"
+  print_option "-h" "Print this help message"
+}
+.RE
+.fi
+.PP
+Example of options processing:
+.PP
+.nf
+.RS
+# Options processing
+while getopts "vdh" OPTION ; do
+  case $OPTION in
+    v) enable_verbose ;;
+    d) enable_debug ;;
+    h) print_usage ; exit 0 ;;
+    *) print_usage ; exit 1 ;;
+  esac
+done ; shift $(($OPTIND-1))
+.RE
+.fi
+
+.SH SEE ALSO
+.BR dash (1),
+.BR bash (1).
