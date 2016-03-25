@@ -1,0 +1,21 @@
+Source: raph-shell-functions
+Section: utils
+Priority: optional
+Maintainer: Raphaël Halimi <raphael.halimi@gmail.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.7
+Homepage: https://github.com/MoonSweep/raph-shell-functions
+Vcs-Browser: https://github.com/MoonSweep/raph-shell-functions.git
+Vcs-Git: https://github.com/MoonSweep/raph-shell-functions.git
+
+Package: raph-shell-functions
+Architecture: all
+Depends: ${misc:Depends}
+Breaks: raph-scripts (<= 1.2)
+Replaces: raph-scripts (<= 1.2)
+Description: Collection of shell functions commonly used in scripts
+ This is a collection of shell functions commonly used in scripts, like
+ checking if the script is run as root, ensuring that only one instance is
+ running at the same time, print some messages only in verbose mode, or
+ trapping the most common signals to exit carefully in case something goes
+ wrong.
