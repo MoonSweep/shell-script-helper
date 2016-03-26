@@ -61,10 +61,10 @@ while getopts "vdf:e:h" OPTION ; do
   esac
 done ; shift $(($OPTIND-1))
 
-STUB_NAME="$1"
+SCRIPT_NAME="$1"
 SCRIPT_DESCRIPTION="${2:-"Script description"}"
-STUB_BASENAME="`basename $STUB_NAME`"
-CONFIG_FILE_BASENAME="$STUB_BASENAME.conf"
+SCRIPT_BASENAME="`basename $SCRIPT_NAME`"
+CONFIG_FILE_BASENAME="$SCRIPT_BASENAME.conf"
 
 
 #
@@ -84,13 +84,13 @@ CONFIG_FILE_BASENAME="$STUB_BASENAME.conf"
 # Script stub
 #
 
-printf "Creating shell script stub in $STUB_NAME\n"
-[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
+printf "Creating shell script stub in $SCRIPT_NAME\n"
+[ -e "$SCRIPT_NAME" ] && die "File \"$SCRIPT_NAME\" already exists"
 
-cat << EOF > "$STUB_NAME"
+cat << EOF > "$SCRIPT_NAME"
 #! /bin/sh
 
-# $STUB_BASENAME v0.1
+# $SCRIPT_BASENAME v0.1
 # $SCRIPT_DESCRIPTION
 # Copyright (c) `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
 
@@ -169,31 +169,31 @@ done ; shift \$((\$OPTIND-1))
 EOF
 
 printf "Adding executable bit\n"
-chmod +x "$STUB_NAME"
+chmod +x "$SCRIPT_NAME"
 
 
 #
 # Script manpage stub
 #
 
-SCRIPT_MANPAGE_NAME="$STUB_NAME.1"
+SCRIPT_MANPAGE_NAME="$SCRIPT_NAME.1"
 printf "Creating manual page for script in $SCRIPT_MANPAGE_NAME\n"
 [ -e "$SCRIPT_MANPAGE_NAME" ] && die "File \"$SCRIPT_MANPAGE_NAME\" already exists"
 cat << EOF > "$SCRIPT_MANPAGE_NAME"
 .\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
 
-.TH `echo $STUB_BASENAME | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
+.TH `echo $SCRIPT_BASENAME | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
 
 .SH NAME
-$STUB_BASENAME - `echo $SCRIPT_DESCRIPTION | tr [:upper:] [:lower:]`
+$SCRIPT_BASENAME - `echo $SCRIPT_DESCRIPTION | tr [:upper:] [:lower:]`
 
 .SH SYNOPSIS
-\\fB$STUB_BASENAME\\fR
+\\fB$SCRIPT_BASENAME\\fR
 [\\fB-vdh\\fR]
 [\\fIARGS\\fR]...
 
 .SH DESCRIPTION
-\\fB$STUB_BASENAME\\fR is a shell script that...
+\\fB$SCRIPT_BASENAME\\fR is a shell script that...
 
 .SH OPTIONS
 Options must be specified before arguments.
@@ -216,19 +216,19 @@ A system-wide \\fI/etc/$CONFIG_FILE_BASENAME\\fR and a per-user
 Important: bla bla bla.
 
 .SH EXAMPLE
-Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/foo.txt" in verbose mode:
+Invoke \\fB$SCRIPT_BASENAME\\fR on file "/home/user/foo.txt" in verbose mode:
 .PP
 .nf
 .RS
-$STUB_BASENAME -v "/home/user/foo.txt"
+$SCRIPT_BASENAME -v "/home/user/foo.txt"
 .RE
 .fi
 .PP
-Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/bar.txt" in debug mode:
+Invoke \\fB$SCRIPT_BASENAME\\fR on file "/home/user/bar.txt" in debug mode:
 .PP
 .nf
 .RS
-$STUB_BASENAME -d "/home/user/bar.txt"
+$SCRIPT_BASENAME -d "/home/user/bar.txt"
 .RE
 .fi
 
@@ -241,7 +241,7 @@ EOF
 # Config file manpage stub
 #
 
-CONFIG_FILE_MANPAGE_NAME="$STUB_NAME.conf.5"
+CONFIG_FILE_MANPAGE_NAME="$SCRIPT_NAME.conf.5"
 printf "Creating manual page for configuration file in $CONFIG_FILE_MANPAGE_NAME\n"
 [ -e "$CONFIG_FILE_MANPAGE_NAME" ] && die "File \"$CONFIG_FILE_MANPAGE_NAME\" already exists"
 cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
@@ -250,7 +250,7 @@ cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
 .TH `echo $CONFIG_FILE_BASENAME | tr [:lower:] [:upper:]` 5 "`date --rfc-3339=date`"
 
 .SH NAME
-$CONFIG_FILE_BASENAME - \\fB$STUB_BASENAME\\fR configuration file
+$CONFIG_FILE_BASENAME - \\fB$SCRIPT_BASENAME\\fR configuration file
 
 .SH SYNOPSIS
 .TP
@@ -262,7 +262,7 @@ per-user
 
 .SH DESCRIPTION
 The \\fI$CONFIG_FILE_BASENAME\\fR configuration files are sourced by the
-\\fB$STUB_BASENAME\\fR shell script to set some default variables.
+\\fB$SCRIPT_BASENAME\\fR shell script to set some default variables.
 .PP
 The system-wide configuration file overrides the script defaults; the per-user
 configuration file overrides the system-wide configuration file; and finally,
@@ -283,7 +283,7 @@ Important: bla bla bla.
 .SH EXAMPLE
 .nf
 .RS
-# Configuration file for $STUB_BASENAME
+# Configuration file for $SCRIPT_BASENAME
 # See the $CONFIG_FILE_BASENAME(5) manpage for details
 
 VERBOSE=1
@@ -292,7 +292,7 @@ DEBUG=0
 .fi
 
 .SH SEE ALSO
-.BR $STUB_BASENAME (1).
+.BR $SCRIPT_BASENAME (1).
 EOF
 
 
