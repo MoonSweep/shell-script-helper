@@ -92,7 +92,7 @@ print_error () {
 }
 
 
-# Helper  to display options in the help message
+# Helper to display options in the help message
 # Args: Exactly two strings (switch and description, e.g. "-v" "Verbose mode")
 print_option() {
   printf "  %-20s%s\n" "$1" "$2"
@@ -111,9 +111,9 @@ delete_files () {
 
 
 # Prints a string and exits with a return code of  1
-# Args: Exactly one string
+# Args: Exactly one string, or none
 die () {
-  print_error "$1, aborting."
+  print_error "${1:-"Unknown error"}, aborting."
   exit 1
 }
 
