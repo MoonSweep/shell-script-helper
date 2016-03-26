@@ -74,7 +74,7 @@ print_verbose () {
 }
 
 
-# Desc:	Prints a string on STDOUT only if the DEBUG variable is equal to 1.
+# Prints a string on STDOUT only if the DEBUG variable is equal to 1.
 # Args: one or more strings
 print_debug () {
   [ $DEBUG -eq 1 ] && for MESSAGE in "$@" ; do
@@ -93,14 +93,14 @@ print_error () {
 
 
 # Helper  to display options in the help message
-# Args:	Exactly two strings (switch and description, e.g. "-v" "Verbose mode")
+# Args: Exactly two strings (switch and description, e.g. "-v" "Verbose mode")
 print_option() {
   printf "  %-20s%s\n" "$1" "$2"
 }
 
 
 # Deletes one or more files, with some checks and feedback
-# Args:	One or more filenames
+# Args: One or more filenames
 delete_files () {
   local FILE_TO_DELETE
   for FILE_TO_DELETE in "$@" ; do
@@ -111,7 +111,7 @@ delete_files () {
 
 
 # Prints a string and exits with a return code of  1
-# Args:	Exactly one string
+# Args: Exactly one string
 die () {
   print_error "$1, aborting."
   exit 1
