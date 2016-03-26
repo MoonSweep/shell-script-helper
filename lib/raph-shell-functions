@@ -98,7 +98,7 @@ print_option() {
 delete_files () {
   local FILE_TO_DELETE
   for FILE_TO_DELETE in "$@" ; do
-    print_verbose "Deleting file $FILE_TO_DELETE..."
+    print_debug "Deleting file $FILE_TO_DELETE..."
     rm -f "$FILE_TO_DELETE" || print_error "Couldn't delete file $FILE_TO_DELETE"
   done
 }
