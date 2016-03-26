@@ -23,7 +23,7 @@ CRSS_EMAIL="$USER@`hostname -f`"
 #
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] FILENAME\n" "`basename $0`"
+  printf "Usage: %s [OPTIONS] FILENAME [DESCRIPTION]\n" "`basename $0`"
   printf "This script creates a shell script stub using raph-shell-functions.\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
@@ -33,6 +33,8 @@ print_usage () {
   print_option "-h" "Print this help message"
   printf "\nFILENAME:\n"
   printf "The file name of the script you want to create.\n"
+  printf "\nDESCRIPTION:\n"
+  printf "A small description of your script.\n"
 }
 
 
@@ -59,23 +61,24 @@ while getopts "vdf:e:h" OPTION ; do
   esac
 done ; shift $(($OPTIND-1))
 
+STUB_NAME="$1"
+SCRIPT_DESCRIPTION="${2:-"Script description"}"
+STUB_BASENAME="`basename $STUB_NAME`"
+CONFIG_FILE_BASENAME="$STUB_BASENAME.conf"
+
 
 #
 # Checks
 #
 
-[ $# -ne 1 ] && die "Please provide exactly one argument"
+[ $# -lt 1 ] && die "Please provide at least one argument"
+[ $# -gt 2 ] && die "Please provide at most two arguments"
+[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
 
 
 #
 # MAIN
 #
-
-STUB_NAME="$1"
-STUB_BASENAME="`basename $STUB_NAME`"
-CONFIG_FILE_BASENAME="$STUB_BASENAME.conf"
-[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
-
 
 #
 # Script stub
@@ -88,7 +91,7 @@ cat << EOF > "$STUB_NAME"
 #! /bin/sh
 
 # $STUB_BASENAME v0.1
-# Description
+# $SCRIPT_DESCRIPTION
 # Copyright (c) `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
 
 # Source Raph's Shell Functions
@@ -117,7 +120,7 @@ USER_CONFIG_FILE="/home/\$USER/.\`basename \$0\`.conf"
 
 print_usage () {
   printf "Usage: %s [OPTIONS] [ARGS...]\n" "\`basename \$0\`"
-  printf "Script description.\n"
+  printf "$SCRIPT_DESCRIPTION\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
   print_option "-d" "Debug mode"
@@ -182,7 +185,7 @@ cat << EOF > "$SCRIPT_MANPAGE_NAME"
 .TH `echo $STUB_BASENAME | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
 
 .SH NAME
-$STUB_BASENAME \- program to do something
+$STUB_BASENAME \- `echo $SCRIPT_DESCRIPTION | tr [:upper:] [:lower:]`
 
 .SH SYNOPSIS
 \\fB$STUB_BASENAME\\fR [\\fB\\-vdh\\fR] [\\fIARGS\\fR]...
