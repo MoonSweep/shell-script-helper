@@ -3,11 +3,16 @@
 .TH CREATE-RAPH-SHELL-SCRIPT 1 "2016-03-24"
 
 .SH NAME
-create-raph-shell-script \- program to create a shell script stub which uses raph-shell-functions
+create-raph-shell-script - program to create a shell script stub which uses
+raph-shell-functions
 
 .SH SYNOPSIS
-\fBcreate-raph-shell-script\fR [\fB\-vdh\fR] [\fB\-f\fR \fIFULL_NAME\fR]
-[\fB-e\fR \fIEMAIL_ADDRESS\fR] \fISCRIPT-NAME\fR
+\fBcreate-raph-shell-script\fR
+[\fB-vdh\fR]
+[\fB-f\fR \fIFULL_NAME\fR]
+[\fB-e\fR \fIEMAIL_ADDRESS\fR]
+\fINAME\fR
+[\fIDESCRIPTION\fR]
 
 .SH DESCRIPTION
 \fBcreate-raph-shell-script\fR is a program to automatically create a shell
@@ -17,20 +22,27 @@ script stub (and its associated manpages), which uses the
 .SH OPTIONS
 Options must be specified before arguments.
 .TP
-.BR \-v
+.BI -v
 Enables verbose mode.
 .TP
-.BR \-d
+.BI -d
 Enables debug mode (implies verbose mode).
 .TP
-.BR \-f " \fIFULL_NAME\fR"
+.BI -f " FULL_NAME"
 Your full name.
 .TP
-.BR \-e " \fIEMAIL_ADDRESS\fR"
+.BI -e " EMAIL_ADDRESS"
 Your e-mail address.
 .TP
-.BR \-h
+.BI -h
 Show summary of options.
+
+.SH ARGUMENTS
+The first argument, \fINAME\fR, is mandatory. It's the name (with optional
+path) of the script you want to create.
+.PP
+The second argument, \fIDESCRIPTION\fR, is optional. It's a small description
+of your script.
 
 .SH FILES
 A system-wide \fI/etc/create-raph-shell-script.conf\fR and a per-user
@@ -39,12 +51,16 @@ the \fBcreate-raph-shell-script.conf\fR(5) manpage for details.
 
 .SH NOTES
 \fBcreate-raph-shell-script\fR will abort if a file it tries to create already exists.
+.PP
+It will also refuse to create a script with spaces in its name (this would mess
+up the manpages); spaces are allowed in the path, though.
 
 .SH EXAMPLE
-Create a script called \fBfoo\fR in /tmp, with John Doe as a name and jdoe@bar.com as e-mail address:
+Create a script called \fBfoo\fR in directory "~/My Scripts", with John Doe as
+a name and jdoe@bar.com as e-mail address:
 .PP
 .RS
-create-raph-shell-script -f "John Doe" -e jdoe@bar.com /tmp/foo
+create-raph-shell-script -f "John Doe" -e jdoe@bar.com ~/My\\ Scripts/foo
 .RE
 .PP
 This will create three files: a shell script stub in \fI/tmp/foo\fR, a manpage
