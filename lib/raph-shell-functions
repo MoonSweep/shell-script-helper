@@ -66,23 +66,29 @@ enable_debug () {
 
 
 # Prints a string on STDOUT only if the VERBOSE variable is equal to 1
-# Args: exactly one string
+# Args: one or more strings
 print_verbose () {
-  [ $VERBOSE -eq 1 ] && printf "%-8s%s\n" "[INFO]" "$1"
+  [ $VERBOSE -eq 1 ] && for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[INFO]" "$MESSAGE"
+  done
 }
 
 
 # Desc:	Prints a string on STDOUT only if the DEBUG variable is equal to 1.
-# Args:	exactly one string
+# Args: one or more strings
 print_debug () {
-  [ $DEBUG -eq 1 ] && printf "%-8s%s\n" "[DEBUG]" "$1"
+  [ $DEBUG -eq 1 ] && for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[DEBUG]" "$MESSAGE"
+  done
 }
 
 
 # Prints a string on STDERR with the [ERROR] prefix.
-# Args:	exactly one string
+# Args: one or more strings
 print_error () {
-  printf "%-8s%s\n" "[ERROR]" "$1" 1>&2
+  for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[ERROR]" "$MESSAGE" 1>&2
+  done
 }
 
 
