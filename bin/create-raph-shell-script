@@ -182,10 +182,10 @@ printf "Creating manual page for script in $SCRIPT_MANPAGE_NAME\n"
 cat << EOF > "$SCRIPT_MANPAGE_NAME"
 .\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
 
-.TH `echo $SCRIPT_BASENAME | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
+.TH `printf "$SCRIPT_BASENAME" | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
 
 .SH NAME
-$SCRIPT_BASENAME - `echo $SCRIPT_DESCRIPTION | tr [:upper:] [:lower:]`
+$SCRIPT_BASENAME - `printf "$SCRIPT_DESCRIPTION" | tr [:upper:] [:lower:]`
 
 .SH SYNOPSIS
 \\fB$SCRIPT_BASENAME\\fR
@@ -247,7 +247,7 @@ printf "Creating manual page for configuration file in $CONFIG_FILE_MANPAGE_NAME
 cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
 .\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
 
-.TH `echo $CONFIG_FILE_BASENAME | tr [:lower:] [:upper:]` 5 "`date --rfc-3339=date`"
+.TH `printf "$CONFIG_FILE_BASENAME" | tr [:lower:] [:upper:]` 5 "`date --rfc-3339=date`"
 
 .SH NAME
 $CONFIG_FILE_BASENAME - \\fB$SCRIPT_BASENAME\\fR configuration file
