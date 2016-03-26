@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# create-raph-shell-script v1.0
+# create-raph-shell-script v1.1
 # Create a shell script stub using Raph's Shell Functions
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 
