@@ -23,7 +23,7 @@ CRSS_EMAIL="$USER@`hostname -f`"
 #
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] FILENAME [DESCRIPTION]\n" "`basename $0`"
+  printf "Usage: %s [OPTIONS] NAME [DESCRIPTION]\n" "`basename $0`"
   printf "This script creates a shell script stub using raph-shell-functions.\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
@@ -31,8 +31,8 @@ print_usage () {
   print_option "-f FULL_NAME" "Your full name"
   print_option "-e EMAIL_ADDRESS" "Your e-mail address"
   print_option "-h" "Print this help message"
-  printf "\nFILENAME:\n"
-  printf "The file name of the script you want to create.\n"
+  printf "\nNAME:\n"
+  printf "The name of the script you want to create.\n"
   printf "\nDESCRIPTION:\n"
   printf "A small description of your script.\n"
 }
