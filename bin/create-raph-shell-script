@@ -185,10 +185,12 @@ cat << EOF > "$SCRIPT_MANPAGE_NAME"
 .TH `echo $STUB_BASENAME | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
 
 .SH NAME
-$STUB_BASENAME \- `echo $SCRIPT_DESCRIPTION | tr [:upper:] [:lower:]`
+$STUB_BASENAME - `echo $SCRIPT_DESCRIPTION | tr [:upper:] [:lower:]`
 
 .SH SYNOPSIS
-\\fB$STUB_BASENAME\\fR [\\fB\\-vdh\\fR] [\\fIARGS\\fR]...
+\\fB$STUB_BASENAME\\fR
+[\\fB-vdh\\fR]
+[\\fIARGS\\fR]...
 
 .SH DESCRIPTION
 \\fB$STUB_BASENAME\\fR is a shell script that...
@@ -196,13 +198,13 @@ $STUB_BASENAME \- `echo $SCRIPT_DESCRIPTION | tr [:upper:] [:lower:]`
 .SH OPTIONS
 Options must be specified before arguments.
 .TP
-.BR \\-v
+.BI -v
 Enables verbose mode.
 .TP
-.BR \\-d
+.BI -d
 Enables debug mode (implies verbose mode).
 .TP
-.BR \\-h
+.BI -h
 Show summary of options.
 
 .SH FILES
@@ -216,15 +218,19 @@ Important: bla bla bla.
 .SH EXAMPLE
 Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/foo.txt" in verbose mode:
 .PP
+.nf
 .RS
-$STUB_BASENAME \-v "/home/user/foo.txt"
+$STUB_BASENAME -v "/home/user/foo.txt"
 .RE
+.fi
 .PP
 Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/bar.txt" in debug mode:
 .PP
+.nf
 .RS
-$STUB_BASENAME \-d "/home/user/bar.txt"
+$STUB_BASENAME -d "/home/user/bar.txt"
 .RE
+.fi
 
 .SH SEE ALSO
 .BR $CONFIG_FILE_BASENAME (5).
@@ -244,7 +250,7 @@ cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
 .TH `echo $CONFIG_FILE_BASENAME | tr [:lower:] [:upper:]` 5 "`date --rfc-3339=date`"
 
 .SH NAME
-$CONFIG_FILE_BASENAME \- \\fB$STUB_BASENAME\\fR configuration file
+$CONFIG_FILE_BASENAME - \\fB$STUB_BASENAME\\fR configuration file
 
 .SH SYNOPSIS
 .TP
