@@ -84,7 +84,7 @@ CONFIG_FILE_BASENAME="$STUB_BASENAME.conf"
 # Script stub
 #
 
-printf "Creating shell script stub in $STUB_NAME...\n"
+printf "Creating shell script stub in $STUB_NAME\n"
 [ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
 
 cat << EOF > "$STUB_NAME"
@@ -112,7 +112,7 @@ USER_CONFIG_FILE="/home/\$USER/.\`basename \$0\`.conf"
 
 #on_exit () {
 #  # Do some cleanup
-#  print_verbose "Cleaning up..."
+#  print_verbose "Cleaning up"
 #  delete_files \$TEMP_FILE \$OTHER_TEMP_FILE
 #  # Do something else
 #  ...
@@ -168,7 +168,7 @@ done ; shift \$((\$OPTIND-1))
 # Do some things
 EOF
 
-printf "Adding executable bit...\n"
+printf "Adding executable bit\n"
 chmod +x "$STUB_NAME"
 
 
@@ -177,7 +177,7 @@ chmod +x "$STUB_NAME"
 #
 
 SCRIPT_MANPAGE_NAME="$STUB_NAME.1"
-printf "Creating manual page for script in $SCRIPT_MANPAGE_NAME...\n"
+printf "Creating manual page for script in $SCRIPT_MANPAGE_NAME\n"
 [ -e "$SCRIPT_MANPAGE_NAME" ] && die "File \"$SCRIPT_MANPAGE_NAME\" already exists"
 cat << EOF > "$SCRIPT_MANPAGE_NAME"
 .\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
@@ -236,7 +236,7 @@ EOF
 #
 
 CONFIG_FILE_MANPAGE_NAME="$STUB_NAME.conf.5"
-printf "Creating manual page for configuration file in $CONFIG_FILE_MANPAGE_NAME...\n"
+printf "Creating manual page for configuration file in $CONFIG_FILE_MANPAGE_NAME\n"
 [ -e "$CONFIG_FILE_MANPAGE_NAME" ] && die "File \"$CONFIG_FILE_MANPAGE_NAME\" already exists"
 cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
 .\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
