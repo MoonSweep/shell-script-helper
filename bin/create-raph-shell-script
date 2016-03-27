@@ -169,7 +169,7 @@ done ; shift \$((OPTIND-1))
 # Do some things
 EOF
 
-printf "Adding executable bit\n"
+print_debug "Adding executable bit"
 chmod +x "$SCRIPT_NAME"
 
 
