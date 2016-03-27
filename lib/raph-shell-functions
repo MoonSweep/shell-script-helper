@@ -1,6 +1,7 @@
-# Raph's Shell Functions v1.0
+# Raph's Shell Functions v1.1
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 # Licence: GPL-3+
+# vim: syntax=sh
 
 # Please read the raph-shell-functions(3) manpage for documentation
 
@@ -21,14 +22,14 @@ root_only () {
 # Locks the script, ensuring only one instance is run at a time
 lock_script () {
   local LOCK_FILE
-  LOCK_FILE="/run/lock/`basename $0`.pid"
+  LOCK_FILE="/run/lock/$(basename "$0").pid"
   if [ -e "$LOCK_FILE" ] ; then
-    ps `cat "$LOCK_FILE"` > /dev/null
+    ps "$(cat "$LOCK_FILE")" > /dev/null
     if [ $? -ne 0 ] ; then
       printf "Deleting stale lock file %s\n" "$LOCK_FILE"
       rm -f "$LOCK_FILE"
     else
-      print_error "Script already running with PID `cat "$LOCK_FILE"`, aborting."
+      print_error "Script already running with PID $(cat "$LOCK_FILE"), aborting."
       exit 1
     fi
   fi
@@ -40,9 +41,9 @@ lock_script () {
 # Unlocks the script
 unlock_script () {
   local LOCK_FILE
-  LOCK_FILE="/run/lock/`basename $0`.pid"
+  LOCK_FILE="/run/lock/$(basename "$0").pid"
   if [ -e "$LOCK_FILE" ] ; then
-    if [ `cat $LOCK_FILE` -eq $$ ] ; then
+    if [ "$(cat "$LOCK_FILE")" -eq $$ ] ; then
       print_debug "Deleting lock file $LOCK_FILE with PID $$"
       rm -f "$LOCK_FILE"
     fi
@@ -66,55 +67,61 @@ enable_debug () {
 
 
 # Prints a string on STDOUT only if the VERBOSE variable is equal to 1
-# Args: exactly one string
+# Args: one or more strings
 print_verbose () {
-  [ $VERBOSE -eq 1 ] && printf "%-8s%s\n" "[INFO]" "$1"
+  [ $VERBOSE -eq 1 ] && for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[INFO]" "$MESSAGE"
+  done
 }
 
 
-# Desc:	Prints a string on STDOUT only if the DEBUG variable is equal to 1.
-# Args:	exactly one string
+# Prints a string on STDOUT only if the DEBUG variable is equal to 1.
+# Args: one or more strings
 print_debug () {
-  [ $DEBUG -eq 1 ] && printf "%-8s%s\n" "[DEBUG]" "$1"
+  [ $DEBUG -eq 1 ] && for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[DEBUG]" "$MESSAGE"
+  done
 }
 
 
 # Prints a string on STDERR with the [ERROR] prefix.
-# Args:	exactly one string
+# Args: one or more strings
 print_error () {
-  printf "%-8s%s\n" "[ERROR]" "$1" 1>&2
+  for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[ERROR]" "$MESSAGE" 1>&2
+  done
 }
 
 
-# Helper  to display options in the help message
-# Args:	Exactly two strings (switch and description, e.g. "-v" "Verbose mode")
+# Helper to display options in the help message
+# Args: Exactly two strings (switch and description, e.g. "-v" "Verbose mode")
 print_option() {
   printf "  %-20s%s\n" "$1" "$2"
 }
 
 
 # Deletes one or more files, with some checks and feedback
-# Args:	One or more filenames
+# Args: One or more filenames
 delete_files () {
   local FILE_TO_DELETE
   for FILE_TO_DELETE in "$@" ; do
-    print_verbose "Deleting file $FILE_TO_DELETE..."
+    print_debug "Deleting file $FILE_TO_DELETE..."
     rm -f "$FILE_TO_DELETE" || print_error "Couldn't delete file $FILE_TO_DELETE"
   done
 }
 
 
 # Prints a string and exits with a return code of  1
-# Args:	Exactly one string
+# Args: Exactly one string, or none
 die () {
-  print_error "$1, aborting."
+  print_error "${1:-"Unknown error"}, aborting."
   exit 1
 }
 
 
 # Automatically called when the script exits
 quit () {
-  type on_exit > /dev/null 2>&1 && on_exit
+  command -v on_exit > /dev/null 2>&1 && on_exit
   unlock_script
 }
 
@@ -147,7 +154,7 @@ DEBUG=0
 
 # Print help
 #print_help () {
-#  printf "Usage: %s [OPTIONS] [ARGS...]\n" "`basename $0`"
+#  printf "Usage: %s [OPTIONS] [ARGS...]\n" "$(basename $0)"
 #  printf "\nOPTIONS:\n"
 #  print_option "-v" "Verbose mode"
 #  print_option "-d" "Debug mode (implies -v)"

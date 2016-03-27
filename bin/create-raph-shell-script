@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# create-raph-shell-script v1.0
+# create-raph-shell-script v1.1
 # Create a shell script stub using Raph's Shell Functions
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 
@@ -12,10 +12,10 @@
 # Variables
 #
 
-SYSTEM_CONFIG_FILE="/etc/`basename $0`.conf"
-USER_CONFIG_FILE="/home/$USER/.`basename $0`.conf"
+SYSTEM_CONFIG_FILE="/etc/$(basename "$0").conf"
+USER_CONFIG_FILE="$HOME/.$(basename "$0").conf"
 CRSS_FULLNAME="$USER"
-CRSS_EMAIL="$USER@`hostname -f`"
+CRSS_EMAIL="$USER@$(hostname -f)"
 
 
 #
@@ -23,7 +23,7 @@ CRSS_EMAIL="$USER@`hostname -f`"
 #
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] FILENAME\n" "`basename $0`"
+  printf "Usage: %s [OPTIONS] NAME [DESCRIPTION]\n" "$(basename "$0")"
   printf "This script creates a shell script stub using raph-shell-functions.\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
@@ -31,8 +31,10 @@ print_usage () {
   print_option "-f FULL_NAME" "Your full name"
   print_option "-e EMAIL_ADDRESS" "Your e-mail address"
   print_option "-h" "Print this help message"
-  printf "\nFILENAME:\n"
-  printf "The file name of the script you want to create.\n"
+  printf "\nNAME:\n"
+  printf "The name of the script you want to create.\n"
+  printf "\nDESCRIPTION:\n"
+  printf "A small description of your script.\n"
 }
 
 
@@ -57,39 +59,41 @@ while getopts "vdf:e:h" OPTION ; do
     h) print_usage ; exit 0 ;;
     *) print_usage ; exit 1 ;;
   esac
-done ; shift $(($OPTIND-1))
+done ; shift $((OPTIND-1))
+
+SCRIPT_NAME="$1"
+SCRIPT_DESCRIPTION="${2:-"Script description"}"
+SCRIPT_BASENAME="$(basename "$SCRIPT_NAME")"
+CONFIG_FILE_BASENAME="$SCRIPT_BASENAME.conf"
 
 
 #
 # Checks
 #
 
-[ $# -ne 1 ] && die "Please provide exactly one argument"
+[ $# -lt 1 ] && die "Please provide at least one argument"
+[ $# -gt 2 ] && die "Please provide at most two arguments"
+printf "%s" "$SCRIPT_BASENAME" | grep -E -q "\s" && die "Spaces are not allowed in script name"
+[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
 
 
 #
 # MAIN
 #
 
-STUB_NAME="$1"
-STUB_BASENAME="`basename $STUB_NAME`"
-CONFIG_FILE_BASENAME="$STUB_BASENAME.conf"
-[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
-
-
 #
 # Script stub
 #
 
-printf "Creating shell script stub in $STUB_NAME...\n"
-[ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
+printf "Creating shell script stub in %s\n" "$SCRIPT_NAME"
+[ -e "$SCRIPT_NAME" ] && die "File \"$SCRIPT_NAME\" already exists"
 
-cat << EOF > "$STUB_NAME"
+cat << EOF > "$SCRIPT_NAME"
 #! /bin/sh
 
-# $STUB_BASENAME v0.1
-# Description
-# Copyright (c) `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
+# $SCRIPT_BASENAME v0.1
+# $SCRIPT_DESCRIPTION
+# Copyright (c) $(date +%Y) $CRSS_FULLNAME <$CRSS_EMAIL>
 
 # Source Raph's Shell Functions
 . /lib/raph-shell-functions
@@ -99,8 +103,8 @@ cat << EOF > "$STUB_NAME"
 # Variables
 #
 
-SYSTEM_CONFIG_FILE="/etc/\`basename \$0\`.conf"
-USER_CONFIG_FILE="/home/\$USER/.\`basename \$0\`.conf"
+SYSTEM_CONFIG_FILE="/etc/\$(basename "\$0").conf"
+USER_CONFIG_FILE="\$HOME/.\$(basename "\$0").conf"
 
 
 #
@@ -109,15 +113,15 @@ USER_CONFIG_FILE="/home/\$USER/.\`basename \$0\`.conf"
 
 #on_exit () {
 #  # Do some cleanup
-#  print_verbose "Cleaning up..."
+#  print_verbose "Cleaning up"
 #  delete_files \$TEMP_FILE \$OTHER_TEMP_FILE
 #  # Do something else
 #  ...
 #}
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] [ARGS...]\n" "\`basename \$0\`"
-  printf "Script description.\n"
+  printf "Usage: %s [OPTIONS] [ARGS...]\n" "\$(basename "\$0")"
+  printf "$SCRIPT_DESCRIPTION\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
   print_option "-d" "Debug mode"
@@ -146,7 +150,7 @@ while getopts "vdh" OPTION ; do
     h) print_usage ; exit 0 ;;
     *) print_usage ; exit 1 ;;
   esac
-done ; shift \$((\$OPTIND-1))
+done ; shift \$((OPTIND-1))
 
 
 #
@@ -165,41 +169,43 @@ done ; shift \$((\$OPTIND-1))
 # Do some things
 EOF
 
-printf "Adding executable bit...\n"
-chmod +x "$STUB_NAME"
+print_debug "Adding executable bit"
+chmod +x "$SCRIPT_NAME"
 
 
 #
 # Script manpage stub
 #
 
-SCRIPT_MANPAGE_NAME="$STUB_NAME.1"
-printf "Creating manual page for script in $SCRIPT_MANPAGE_NAME...\n"
+SCRIPT_MANPAGE_NAME="$SCRIPT_NAME.1"
+printf "Creating manual page for script in %s\n" "$SCRIPT_MANPAGE_NAME"
 [ -e "$SCRIPT_MANPAGE_NAME" ] && die "File \"$SCRIPT_MANPAGE_NAME\" already exists"
 cat << EOF > "$SCRIPT_MANPAGE_NAME"
-.\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
+.\\" (C) Copyright $(date +%Y) $CRSS_FULLNAME <$CRSS_EMAIL>
 
-.TH `echo $STUB_BASENAME | tr [:lower:] [:upper:]` 1 "`date --rfc-3339=date`"
+.TH $(printf "%s" "$SCRIPT_BASENAME" | tr "[:lower:]" "[:upper:]") 1 "$(date --rfc-3339=date)"
 
 .SH NAME
-$STUB_BASENAME \- program to do something
+$SCRIPT_BASENAME - $(printf "%s" "$SCRIPT_DESCRIPTION" | tr "[:upper:]" "[:lower:]")
 
 .SH SYNOPSIS
-\\fB$STUB_BASENAME\\fR [\\fB\\-vdh\\fR] [\\fIARGS\\fR]...
+\\fB$SCRIPT_BASENAME\\fR
+[\\fB-vdh\\fR]
+[\\fIARGS\\fR]...
 
 .SH DESCRIPTION
-\\fB$STUB_BASENAME\\fR is a shell script that...
+\\fB$SCRIPT_BASENAME\\fR is a shell script that...
 
 .SH OPTIONS
 Options must be specified before arguments.
 .TP
-.BR \\-v
+.BI -v
 Enables verbose mode.
 .TP
-.BR \\-d
+.BI -d
 Enables debug mode (implies verbose mode).
 .TP
-.BR \\-h
+.BI -h
 Show summary of options.
 
 .SH FILES
@@ -211,17 +217,21 @@ A system-wide \\fI/etc/$CONFIG_FILE_BASENAME\\fR and a per-user
 Important: bla bla bla.
 
 .SH EXAMPLE
-Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/foo.txt" in verbose mode:
+Invoke \\fB$SCRIPT_BASENAME\\fR on file "/home/user/foo.txt" in verbose mode:
 .PP
+.nf
 .RS
-$STUB_BASENAME \-v "/home/user/foo.txt"
+$SCRIPT_BASENAME -v "/home/user/foo.txt"
 .RE
+.fi
 .PP
-Invoke \\fB$STUB_BASENAME\\fR on file "/home/user/bar.txt" in debug mode:
+Invoke \\fB$SCRIPT_BASENAME\\fR on file "/home/user/bar.txt" in debug mode:
 .PP
+.nf
 .RS
-$STUB_BASENAME \-d "/home/user/bar.txt"
+$SCRIPT_BASENAME -d "/home/user/bar.txt"
 .RE
+.fi
 
 .SH SEE ALSO
 .BR $CONFIG_FILE_BASENAME (5).
@@ -232,16 +242,16 @@ EOF
 # Config file manpage stub
 #
 
-CONFIG_FILE_MANPAGE_NAME="$STUB_NAME.conf.5"
-printf "Creating manual page for configuration file in $CONFIG_FILE_MANPAGE_NAME...\n"
+CONFIG_FILE_MANPAGE_NAME="$SCRIPT_NAME.conf.5"
+printf "Creating manual page for configuration file in %s\n" "$CONFIG_FILE_MANPAGE_NAME"
 [ -e "$CONFIG_FILE_MANPAGE_NAME" ] && die "File \"$CONFIG_FILE_MANPAGE_NAME\" already exists"
 cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
-.\\" (C) Copyright `date +%Y` $CRSS_FULLNAME <$CRSS_EMAIL>
+.\\" (C) Copyright $(date +%Y) $CRSS_FULLNAME <$CRSS_EMAIL>
 
-.TH `echo $CONFIG_FILE_BASENAME | tr [:lower:] [:upper:]` 5 "`date --rfc-3339=date`"
+.TH $(printf "%s" "$CONFIG_FILE_BASENAME" | tr "[:lower:]" "[:upper:]") 5 "$(date --rfc-3339=date)"
 
 .SH NAME
-$CONFIG_FILE_BASENAME \- \\fB$STUB_BASENAME\\fR configuration file
+$CONFIG_FILE_BASENAME - \\fB$SCRIPT_BASENAME\\fR configuration file
 
 .SH SYNOPSIS
 .TP
@@ -253,7 +263,7 @@ per-user
 
 .SH DESCRIPTION
 The \\fI$CONFIG_FILE_BASENAME\\fR configuration files are sourced by the
-\\fB$STUB_BASENAME\\fR shell script to set some default variables.
+\\fB$SCRIPT_BASENAME\\fR shell script to set some default variables.
 .PP
 The system-wide configuration file overrides the script defaults; the per-user
 configuration file overrides the system-wide configuration file; and finally,
@@ -274,7 +284,7 @@ Important: bla bla bla.
 .SH EXAMPLE
 .nf
 .RS
-# Configuration file for $STUB_BASENAME
+# Configuration file for $SCRIPT_BASENAME
 # See the $CONFIG_FILE_BASENAME(5) manpage for details
 
 VERBOSE=1
@@ -283,12 +293,5 @@ DEBUG=0
 .fi
 
 .SH SEE ALSO
-.BR $STUB_BASENAME (1).
+.BR $SCRIPT_BASENAME (1).
 EOF
-
-
-#
-# End
-#
-
-printf "All done.\n"

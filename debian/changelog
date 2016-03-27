@@ -1,9 +1,18 @@
-raph-shell-functions (1.0-1~bpo8+1) jessie-backports; urgency=medium
+raph-shell-functions (1.1-1) unstable; urgency=medium
 
-  * Rebuild for jessie-backports.
-  * Update debian/gbp.conf for jessie-backports
+  * New upstream release
+    - raph-shell-functions:
+      + delete_files now outputs debug instead
+      + print_* now accept more than one string
+      + die now use a default message if none given
+    - create-raph-shell-script:
+      + add script description as optional second argument
+      + add check for spaces in script name
 
- -- Raphaël Halimi <raphael.halimi@gmail.com>  Fri, 25 Mar 2016 14:25:42 +0100
+  * Remove obsolete lintian override "new-package-should-close-itp-bug"
+  * Fix debian/watch
+
+ -- Raphaël Halimi <raphael.halimi@gmail.com>  Sun, 27 Mar 2016 20:26:02 +0200
 
 raph-shell-functions (1.0-1) unstable; urgency=low
 
