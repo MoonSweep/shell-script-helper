@@ -21,14 +21,14 @@ root_only () {
 # Locks the script, ensuring only one instance is run at a time
 lock_script () {
   local LOCK_FILE
-  LOCK_FILE="/run/lock/`basename $0`.pid"
+  LOCK_FILE="/run/lock/$(basename "$0").pid"
   if [ -e "$LOCK_FILE" ] ; then
-    ps `cat "$LOCK_FILE"` > /dev/null
+    ps "$(cat "$LOCK_FILE")" > /dev/null
     if [ $? -ne 0 ] ; then
       printf "Deleting stale lock file %s\n" "$LOCK_FILE"
       rm -f "$LOCK_FILE"
     else
-      print_error "Script already running with PID `cat "$LOCK_FILE"`, aborting."
+      print_error "Script already running with PID $(cat "$LOCK_FILE"), aborting."
       exit 1
     fi
   fi
@@ -40,9 +40,9 @@ lock_script () {
 # Unlocks the script
 unlock_script () {
   local LOCK_FILE
-  LOCK_FILE="/run/lock/`basename $0`.pid"
+  LOCK_FILE="/run/lock/$(basename "$0").pid"
   if [ -e "$LOCK_FILE" ] ; then
-    if [ `cat $LOCK_FILE` -eq $$ ] ; then
+    if [ "$(cat "$LOCK_FILE")" -eq $$ ] ; then
       print_debug "Deleting lock file $LOCK_FILE with PID $$"
       rm -f "$LOCK_FILE"
     fi
@@ -120,7 +120,7 @@ die () {
 
 # Automatically called when the script exits
 quit () {
-  type on_exit > /dev/null 2>&1 && on_exit
+  command -v on_exit > /dev/null 2>&1 && on_exit
   unlock_script
 }
 
@@ -153,7 +153,7 @@ DEBUG=0
 
 # Print help
 #print_help () {
-#  printf "Usage: %s [OPTIONS] [ARGS...]\n" "`basename $0`"
+#  printf "Usage: %s [OPTIONS] [ARGS...]\n" "$(basename $0)"
 #  printf "\nOPTIONS:\n"
 #  print_option "-v" "Verbose mode"
 #  print_option "-d" "Debug mode (implies -v)"
