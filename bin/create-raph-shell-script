@@ -73,6 +73,7 @@ CONFIG_FILE_BASENAME="$SCRIPT_BASENAME.conf"
 
 [ $# -lt 1 ] && die "Please provide at least one argument"
 [ $# -gt 2 ] && die "Please provide at most two arguments"
+printf "%s" "$SCRIPT_BASENAME" | grep -E -q "\s" && die "Spaces are not allowed in script name"
 [ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
 
 
