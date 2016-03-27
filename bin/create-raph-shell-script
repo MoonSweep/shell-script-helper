@@ -295,10 +295,3 @@ DEBUG=0
 .SH SEE ALSO
 .BR $SCRIPT_BASENAME (1).
 EOF
-
-
-#
-# End
-#
-
-printf "All done.\n"
