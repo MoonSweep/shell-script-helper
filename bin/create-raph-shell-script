@@ -273,10 +273,10 @@ the command-line options override the per-user configuration file.
 The following variables are used in the script:
 .TP
 .B VERBOSE
-Set to 1 to enable verbose mode. Defaults to 0.
+Set to 1 to enable verbose mode, default is 0.
 .TP
 .B DEBUG
-Set to 1 to enable debug mode (implies verbose mode). Defaults to 0.
+Set to 1 to enable debug mode (implies verbose mode), default is 0.
 
 .SH NOTES
 Important: bla bla bla.
