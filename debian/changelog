@@ -1,3 +1,10 @@
+raph-shell-functions (1.1-1~bpo8+1) jessie-backports; urgency=medium
+
+  * Rebuild for jessie-backports.
+  * Update debian/gbp.conf for jessie-backports
+
+ -- Raphaël Halimi <raphael.halimi@gmail.com>  Sun, 27 Mar 2016 23:31:18 +0200
+
 raph-shell-functions (1.1-1) unstable; urgency=medium
 
   * New upstream release
