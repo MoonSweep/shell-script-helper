@@ -82,7 +82,7 @@ things (like removing temporary files), you must write a function called
 .RS
 on_exit () {
   # Do some cleanup
-  print_verbose "Cleaning up..."
+  print_verbose "Cleaning up"
   delete_files "$TEMP_FILE" "$OTHER_TEMP_FILE"
   # Do something else
   ...
