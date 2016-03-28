@@ -1,3 +1,10 @@
+raph-shell-functions (1.2-1) unstable; urgency=medium
+
+  * New upstream release
+    - Mostly cosmetic changes
+
+ -- Raphaël Halimi <raphael.halimi@gmail.com>  Mon, 28 Mar 2016 05:49:01 +0200
+
 raph-shell-functions (1.1-1) unstable; urgency=medium
 
   * New upstream release
