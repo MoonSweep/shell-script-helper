@@ -154,7 +154,7 @@ DEBUG=0
 
 # Print help
 #print_help () {
-#  printf "Usage: %s [OPTIONS] [ARGS...]\n" "$(basename $0)"
+#  printf "Usage: %s [OPTIONS] [ARGS...]\n" "$(basename "$0")"
 #  printf "\nOPTIONS:\n"
 #  print_option "-v" "Verbose mode"
 #  print_option "-d" "Debug mode (implies -v)"
@@ -169,4 +169,4 @@ DEBUG=0
 #    h) print_help ; exit 0 ;;
 #    *) print_help ; exit 1 ;;
 #  esac
-#done ; shift $(($OPTIND-1))
+#done ; shift $((OPTIND-1))
