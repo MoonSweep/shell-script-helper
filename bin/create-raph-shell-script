@@ -27,7 +27,7 @@ print_usage () {
   printf "This script creates a shell script stub using raph-shell-functions.\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
-  print_option "-d" "Debug mode"
+  print_option "-d" "Debug mode (implies verbose mode)"
   print_option "-f FULL_NAME" "Your full name"
   print_option "-e EMAIL_ADDRESS" "Your e-mail address"
   print_option "-h" "Print this help message"
@@ -124,7 +124,7 @@ print_usage () {
   printf "$SCRIPT_DESCRIPTION\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
-  print_option "-d" "Debug mode"
+  print_option "-d" "Debug mode (implies verbose mode)"
   print_option "-h" "Print this help message"
   printf "\nARGS:\n"
   printf "Arguments description.\n"
@@ -273,10 +273,10 @@ the command-line options override the per-user configuration file.
 The following variables are used in the script:
 .TP
 .B VERBOSE
-Set to 1 to enable verbose mode. Defaults to 0.
+Set to 1 to enable verbose mode, default is 0.
 .TP
 .B DEBUG
-Set to 1 to enable debug mode (implies verbose mode). Defaults to 0.
+Set to 1 to enable debug mode (implies verbose mode), default is 0.
 
 .SH NOTES
 Important: bla bla bla.
