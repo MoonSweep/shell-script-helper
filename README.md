@@ -26,7 +26,8 @@ located in the `examples` directory. It's safe to play with; run it with the
 
 ## POSIX compliance
 Efforts are made to make this library POSIX-compliant, so that the scripts
-using it can be run with either bash or dash, but it may not be perfect.
+using it can be run with either bash or dash, but it may not be perfect. It's
+checked with shellcheck, and tested regularly under bash and dash.
 
 ## Credits
 Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>

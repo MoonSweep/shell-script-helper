@@ -61,7 +61,6 @@ enable_verbose () {
 # Enables the debug mode
 enable_debug () {
   DEBUG=1
-  enable_verbose
   print_debug "Debug mode enabled"
 }
 
@@ -157,7 +156,7 @@ DEBUG=0
 #  printf "Usage: %s [OPTIONS] [ARGS...]\n" "$(basename "$0")"
 #  printf "\nOPTIONS:\n"
 #  print_option "-v" "Verbose mode"
-#  print_option "-d" "Debug mode (implies -v)"
+#  print_option "-d" "Debug mode"
 #  print_option "-h" "Print this help message"
 #}
 

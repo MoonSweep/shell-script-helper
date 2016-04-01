@@ -7,12 +7,10 @@ create-raph-shell-script - program to create a shell script stub which uses
 raph-shell-functions
 
 .SH SYNOPSIS
-\fBcreate-raph-shell-script\fR
-[\fB-vdh\fR]
-[\fB-f\fR \fIFULL_NAME\fR]
-[\fB-e\fR \fIEMAIL_ADDRESS\fR]
-\fINAME\fR
-[\fIDESCRIPTION\fR]
+.B create-raph-shell-script
+.RI [ option ]...
+.I NAME
+.RI [ DESCRIPTION ]
 
 .SH DESCRIPTION
 \fBcreate-raph-shell-script\fR is a program to automatically create a shell
@@ -22,17 +20,17 @@ script stub (and its associated manpages), which uses the
 .SH OPTIONS
 Options must be specified before arguments.
 .TP
-.BI -v
-Enables verbose mode.
-.TP
-.BI -d
-Enables debug mode (implies verbose mode).
-.TP
 .BI -f " FULL_NAME"
 Your full name.
 .TP
 .BI -e " EMAIL_ADDRESS"
 Your e-mail address.
+.TP
+.BI -v
+Enables verbose mode.
+.TP
+.BI -d
+Enables debug mode.
 .TP
 .BI -h
 Show summary of options.
