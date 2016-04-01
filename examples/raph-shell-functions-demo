@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# raph-shell-functions-demo v1.0
+# raph-shell-functions-demo v1.3
 # Demonstration script for Raph's Shell Functions
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 
@@ -19,7 +19,7 @@ on_exit () {
 }
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] [ARGS...]\n" "$(basename "$0")"
+  printf "Usage: %s [OPTION]... [ARG]...\n" "$(basename "$0")"
   printf "This is a demonstration script for raph-shell-functions.\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
