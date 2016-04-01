@@ -1,9 +1,9 @@
-# Raph's Shell Functions v1.3
+# Shell Script Helper v1.3
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 # Licence: GPL-3+
 # vim: syntax=sh
 
-# Please read the raph-shell-functions(3) manpage for documentation
+# Please read the shell-script-helper(3) manpage for documentation
 
 #
 # FUNCTIONS

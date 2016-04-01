@@ -1,11 +1,11 @@
 #! /bin/sh
 
-# create-raph-shell-script v1.3
-# Create a shell script stub using Raph's Shell Functions
+# shell-script-helper-template v1.3
+# Create a shell script stub using shell-script-helper
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 
-# Source Raph's Shell Functions
-. /lib/raph-shell-functions
+# Source shell-script-helper
+. /lib/shell-script-helper
 
 
 #
@@ -27,7 +27,7 @@ CRSS_EMAIL="$USER@$(hostname -f)"
 
 print_usage () {
   printf "Usage: %s [OPTION]... NAME [DESCRIPTION]\n" "$(basename "$0")"
-  printf "This script creates a shell script stub using raph-shell-functions.\n"
+  printf "Create a shell script using shell-script-helper\n"
   printf "\nOPTIONS:\n"
   print_option "-f FULL_NAME" "Your full name"
   print_option "-e EMAIL_ADDRESS" "Your e-mail address"
@@ -98,8 +98,8 @@ cat << EOF > "$SCRIPT_NAME"
 # $SCRIPT_DESCRIPTION
 # Copyright (c) $(date +%Y) $CRSS_FULLNAME <$CRSS_EMAIL>
 
-# Source Raph's Shell Functions
-. /lib/raph-shell-functions
+# Source shell-script-helper
+. /lib/shell-script-helper
 
 
 #

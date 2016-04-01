@@ -1,11 +1,11 @@
 #! /bin/sh
 
-# raph-shell-functions-demo v1.3
-# Demonstration script for Raph's Shell Functions
+# shell-script-helper-demo v1.3
+# Demonstration script for shell-script-helper
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 
-# Source Raph's Shell Functions
-. /lib/raph-shell-functions
+# Source shell-script-helper
+. /lib/shell-script-helper
 
 
 #
@@ -20,7 +20,7 @@ on_exit () {
 
 print_usage () {
   printf "Usage: %s [OPTION]... [ARG]...\n" "$(basename "$0")"
-  printf "This is a demonstration script for raph-shell-functions.\n"
+  printf "Demonstration script for shell-script-helper\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
   print_option "-d" "Debug mode"
