@@ -120,7 +120,7 @@ USER_CONFIG_FILE="\$HOME/.\$(basename "\$0").conf"
 #}
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] [ARGS...]\n" "\$(basename "\$0")"
+  printf "Usage: %s [OPTION]... [ARG]...\n" "\$(basename "\$0")"
   printf "$SCRIPT_DESCRIPTION\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
@@ -189,9 +189,9 @@ cat << EOF > "$SCRIPT_MANPAGE_NAME"
 $SCRIPT_BASENAME - $(printf "%s" "$SCRIPT_DESCRIPTION" | tr "[:upper:]" "[:lower:]")
 
 .SH SYNOPSIS
-\\fB$SCRIPT_BASENAME\\fR
-[\\fB-vdh\\fR]
-[\\fIARGS\\fR]...
+.B $SCRIPT_BASENAME
+.RI [ option ]...
+.RI [ arg ]...
 
 .SH DESCRIPTION
 \\fB$SCRIPT_BASENAME\\fR is a shell script that...
