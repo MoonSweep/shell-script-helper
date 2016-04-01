@@ -26,10 +26,10 @@ print_usage () {
   printf "Usage: %s [OPTIONS] NAME [DESCRIPTION]\n" "$(basename "$0")"
   printf "This script creates a shell script stub using raph-shell-functions.\n"
   printf "\nOPTIONS:\n"
-  print_option "-v" "Verbose mode"
-  print_option "-d" "Debug mode (implies verbose mode)"
   print_option "-f FULL_NAME" "Your full name"
   print_option "-e EMAIL_ADDRESS" "Your e-mail address"
+  print_option "-v" "Verbose mode"
+  print_option "-d" "Debug mode"
   print_option "-h" "Print this help message"
   printf "\nNAME:\n"
   printf "The name of the script you want to create.\n"
@@ -52,10 +52,10 @@ print_usage () {
 
 while getopts "vdf:e:h" OPTION ; do
   case $OPTION in
-    v) enable_verbose ;;
-    d) enable_debug ;;
     f) CRSS_FULLNAME="$OPTARG" ;;
     e) CRSS_EMAIL="$OPTARG" ;;
+    v) enable_verbose ;;
+    d) enable_debug ;;
     h) print_usage ; exit 0 ;;
     *) print_usage ; exit 1 ;;
   esac
@@ -120,11 +120,11 @@ USER_CONFIG_FILE="\$HOME/.\$(basename "\$0").conf"
 #}
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] [ARGS...]\n" "\$(basename "\$0")"
+  printf "Usage: %s [OPTION]... [ARG]...\n" "\$(basename "\$0")"
   printf "$SCRIPT_DESCRIPTION\n"
   printf "\nOPTIONS:\n"
   print_option "-v" "Verbose mode"
-  print_option "-d" "Debug mode (implies verbose mode)"
+  print_option "-d" "Debug mode"
   print_option "-h" "Print this help message"
   printf "\nARGS:\n"
   printf "Arguments description.\n"
@@ -189,9 +189,9 @@ cat << EOF > "$SCRIPT_MANPAGE_NAME"
 $SCRIPT_BASENAME - $(printf "%s" "$SCRIPT_DESCRIPTION" | tr "[:upper:]" "[:lower:]")
 
 .SH SYNOPSIS
-\\fB$SCRIPT_BASENAME\\fR
-[\\fB-vdh\\fR]
-[\\fIARGS\\fR]...
+.B $SCRIPT_BASENAME
+.RI [ option ]...
+.RI [ arg ]...
 
 .SH DESCRIPTION
 \\fB$SCRIPT_BASENAME\\fR is a shell script that...
@@ -203,7 +203,7 @@ Options must be specified before arguments.
 Enables verbose mode.
 .TP
 .BI -d
-Enables debug mode (implies verbose mode).
+Enables debug mode.
 .TP
 .BI -h
 Show summary of options.
@@ -276,7 +276,7 @@ The following variables are used in the script:
 Set to 1 to enable verbose mode, default is 0.
 .TP
 .B DEBUG
-Set to 1 to enable debug mode (implies verbose mode), default is 0.
+Set to 1 to enable debug mode, default is 0.
 
 .SH NOTES
 Important: bla bla bla.

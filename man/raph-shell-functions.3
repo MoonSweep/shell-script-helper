@@ -15,26 +15,25 @@ its functions can be called when needed.
 
 .SH FUNCTIONS
 .TP
-.B root_only
+.BI root_only
 Exits with an error if the script is not run as root. Generally you want to call
 this function at the very beginning of the script. 
 .TP
-.B lock_script	
+.BI lock_script
 Locks the script, ensuring only one instance is run at a time. You want to call
 this function at the beginning of your script if it must not be run more than
 once simultaneously.
 .TP
-.B unlock_script
+.BI unlock_script
 Unlocks the script. It's automatically called when the script exits (see
 \fINOTES\fR).
 .TP
-.B enable_verbose
+.BI enable_verbose
 Enables the verbose mode. Normally you want to call it during options
 processing.
 .TP
-.B enable_debug
-Enables the debug mode (implies verbose mode). Normally you want to call it
-during options processing.
+.BI enable_debug
+Enables the debug mode. Normally you want to call it during options processing.
 .TP
 .BI print_verbose " MESSAGE"
 Prints MESSAGE on STDOUT only if the VERBOSE variable is equal to 1. It
@@ -50,16 +49,16 @@ string will be displayed on a serparate line.
 Prints MESSAGE on STDERR with the [ERROR] prefix. It accepts one or more
 strings as argument(s); each string will be displayed on a serparate line.
 .TP
-\fBprint_option\fR \fISWITCH\fR \fIDESCRIPTION\fR
+.BI print_option " SWITCH" " " DESCRIPTION
 Helper to display options in the help message. It accepts exactly two strings
 as arguments: the switch (e.g. "-v") and its description (e.g. "Verbose mode").
 .TP
-\fBdelete_files\fR \fIFILES\fR...
+.BI delete_files " FILES"\fR...
 Deletes one or more files, with some checks and feedback in verbose mode. It
 accepts one or more filenames as arguments. Don't forget to enclose them is
 double-quotes if they contain spaces.
 .TP
-\fBdie [\fIMESSAGE\fR]
+.BI die " " \fR[ MESSAGE \fR]
 Prints \fIMESSAGE\fR and exits with a return code of 1. It's also automatically
 called when the script receives one of the INT, PIPE or TERM signals (see
 \fINOTES\fR). It accepts exactly one string as argument, or none, in which case
@@ -98,7 +97,7 @@ your scripts more resilient to errors by automatically cleaning up any
 leftovers in case something goes wrong.
 
 .SH EXAMPLE
-TODO: Add an example for each function
+.\"TODO: Add an example for each function
 .PP
 Example of a \fBprint_usage\fR function:
 .PP
