@@ -1,22 +1,23 @@
 .\" (C) Copyright 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 
-.TH CREATE-RAPH-SHELL-SCRIPT.CONF 5 "2016-03-24"
+.TH SHELL-SCRIPT-HELPER-TEMPLATE.CONF 5 "2016-03-24"
 
 .SH NAME
-create-raph-shell-script.conf \- \fBcreate-raph-shell-script\fR configuration
-file
+shell-script-helper-template.conf \- \fBshell-script-helper-template\fR
+configuration file
 
 .SH SYNOPSIS
 .TP
-.B /etc/create-raph-shell-script.conf
+.B /etc/shell-script-helper-template.conf
 system-wide
 .TP
-.B ~/.create-raph-shell-script.conf
+.B ~/.shell-script-helper-template.conf
 per-user
 
 .SH DESCRIPTION
-The \fIcreate-raph-shell-script.conf\fR configuration files are sourced by the
-\fBcreate-raph-shell-script\fR shell script to set some default variables.
+The \fIshell-script-helper-template.conf\fR configuration files are sourced by
+the \fBshell-script-helper-template\fR shell script to set some default
+variables.
 .PP
 The system-wide configuration file overrides the script defaults; the per-user
 configuration file overrides the system-wide configuration file; and finally,
@@ -40,8 +41,8 @@ Set to 1 to enable debug mode, default is 0.
 .SH EXAMPLE
 .nf
 .RS
-# Configuration file for create-raph-shell-script
-# See the create-raph-shell-script.conf(5) manpage for details
+# Configuration file for shell-script-helper-template
+# See the shell-script-helper-template.conf(5) manpage for details
 
 VERBOSE=1
 DEBUG=0
@@ -51,4 +52,4 @@ CRSS_EMAIL="jdoe@bar.com"
 .fi
 
 .SH SEE ALSO
-.BR create-raph-shell-script (1).
+.BR shell-script-helper-template (1).

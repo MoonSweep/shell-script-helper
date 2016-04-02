@@ -1,19 +1,22 @@
 #! /bin/sh
 
-# create-raph-shell-script v1.1
-# Create a shell script stub using Raph's Shell Functions
+# shell-script-helper-template v1.3
+# Create a shell script stub using shell-script-helper
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 
-# Source Raph's Shell Functions
-. /lib/raph-shell-functions
+# Source shell-script-helper
+. /lib/shell-script-helper
 
 
 #
 # Variables
 #
 
+# Configuration files
 SYSTEM_CONFIG_FILE="/etc/$(basename "$0").conf"
 USER_CONFIG_FILE="$HOME/.$(basename "$0").conf"
+
+# Options defaults
 CRSS_FULLNAME="$USER"
 CRSS_EMAIL="$USER@$(hostname -f)"
 
@@ -23,8 +26,8 @@ CRSS_EMAIL="$USER@$(hostname -f)"
 #
 
 print_usage () {
-  printf "Usage: %s [OPTIONS] NAME [DESCRIPTION]\n" "$(basename "$0")"
-  printf "This script creates a shell script stub using raph-shell-functions.\n"
+  printf "Usage: %s [OPTION]... NAME [DESCRIPTION]\n" "$(basename "$0")"
+  printf "Create a shell script using shell-script-helper\n"
   printf "\nOPTIONS:\n"
   print_option "-f FULL_NAME" "Your full name"
   print_option "-e EMAIL_ADDRESS" "Your e-mail address"
@@ -95,17 +98,21 @@ cat << EOF > "$SCRIPT_NAME"
 # $SCRIPT_DESCRIPTION
 # Copyright (c) $(date +%Y) $CRSS_FULLNAME <$CRSS_EMAIL>
 
-# Source Raph's Shell Functions
-. /lib/raph-shell-functions
+# Source shell-script-helper
+. /lib/shell-script-helper
 
 
 #
 # Variables
 #
 
+# Configuration files
 SYSTEM_CONFIG_FILE="/etc/\$(basename "\$0").conf"
 USER_CONFIG_FILE="\$HOME/.\$(basename "\$0").conf"
 
+# Options defaults
+#VERBOSE=0
+#DEBUG=0
 
 #
 # Functions
@@ -200,10 +207,10 @@ $SCRIPT_BASENAME - $(printf "%s" "$SCRIPT_DESCRIPTION" | tr "[:upper:]" "[:lower
 Options must be specified before arguments.
 .TP
 .BI -v
-Enables verbose mode.
+Enable verbose mode.
 .TP
 .BI -d
-Enables debug mode.
+Enable debug mode.
 .TP
 .BI -h
 Show summary of options.
