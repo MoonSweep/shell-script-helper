@@ -5,6 +5,6 @@
 version=4
 
 # GitHub hosted projects
-opts="filenamemangle=s%(?:.*?)?v?(\d[\d.]*)\.tar\.gz%raph-shell-functions-$1.tar.gz%" \
-   https://github.com/MoonSweep/raph-shell-functions/tags \
+opts="filenamemangle=s%(?:.*?)?v?(\d[\d.]*)\.tar\.gz%shell-script-helper-$1.tar.gz%" \
+   https://github.com/MoonSweep/shell-script-helper/tags \
    (?:.*?/)?v?(\d[\d.]*)\.tar\.gz debian
