@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: raph-shell-functions
-Source: https://github.com/MoonSweep/raph-shell-functions
+Upstream-Name: shell-script-helper
+Source: https://github.com/MoonSweep/shell-script-helper
 
 Files: *
 Copyright: 2016 Raphaël Halimi <raphael.halimi@gmail.com>
