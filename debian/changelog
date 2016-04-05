@@ -1,3 +1,9 @@
+shell-script-helper (1.4-2) unstable; urgency=medium
+
+  * Add maintainer scripts to handle the doc symlink switch
+
+ -- Raphaël Halimi <raphael.halimi@gmail.com>  Tue, 05 Apr 2016 06:14:35 +0200
+
 shell-script-helper (1.4-1) unstable; urgency=medium
 
   * New upstream release
