@@ -1,9 +1,8 @@
-shell-script-helper (1.4-1~bpo8+1) jessie-backports; urgency=medium
+shell-script-helper (1.4-2) unstable; urgency=medium
 
-  * Rebuild for jessie-backports.
-  * Update debian/gbp.conf for jessie-backports
+  * Add maintainer scripts to handle the doc symlink switch
 
- -- Raphaël Halimi <raphael.halimi@gmail.com>  Sat, 02 Apr 2016 05:36:10 +0200
+ -- Raphaël Halimi <raphael.halimi@gmail.com>  Tue, 05 Apr 2016 06:14:35 +0200
 
 shell-script-helper (1.4-1) unstable; urgency=medium
 
