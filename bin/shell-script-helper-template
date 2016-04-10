@@ -65,9 +65,18 @@ while getopts "vdf:e:h" OPTION ; do
 done ; shift $((OPTIND-1))
 
 SCRIPT_NAME="$1"
-SCRIPT_DESCRIPTION="${2:-"Script description"}"
+SCRIPT_DIRNAME="$(dirname "$SCRIPT_NAME")"
 SCRIPT_BASENAME="$(basename "$SCRIPT_NAME")"
+if printf "%s" "$SCRIPT_BASENAME" | grep -E -q "\s" ; then
+  printf "Spaces not allowed in script name, replacing all spaces by hyphens\n"
+  SCRIPT_BASENAME="$(printf "%s" "$(basename "$SCRIPT_NAME")" | tr " " "-")"
+  SCRIPT_NAME="$SCRIPT_DIRNAME/$SCRIPT_BASENAME"
+fi
+SCRIPT_DESCRIPTION="${2:-"Script description"}"
 CONFIG_FILE_BASENAME="$SCRIPT_BASENAME.conf"
+SCRIPT_MANPAGE_NAME="$SCRIPT_NAME.1"
+CONFIG_FILE_MANPAGE_NAME="$SCRIPT_NAME.conf.5"
+print_debug "SCRIPT_NAME=$SCRIPT_NAME" "SCRIPT_BASENAME=$SCRIPT_BASENAME" "SCRIPT_DESCRIPTION=$SCRIPT_DESCRIPTION" "CONFIG_FILE_BASENAME=$CONFIG_FILE_BASENAME" "SCRIPT_MANPAGE_NAME=$SCRIPT_MANPAGE_NAME" "CONFIG_FILE_MANPAGE_NAME=$CONFIG_FILE_MANPAGE_NAME"
 
 
 #
@@ -76,7 +85,6 @@ CONFIG_FILE_BASENAME="$SCRIPT_BASENAME.conf"
 
 [ $# -lt 1 ] && die "Please provide at least one argument"
 [ $# -gt 2 ] && die "Please provide at most two arguments"
-printf "%s" "$SCRIPT_BASENAME" | grep -E -q "\s" && die "Spaces are not allowed in script name"
 [ -e "$STUB_NAME" ] && die "File \"$STUB_NAME\" already exists"
 
 
@@ -114,6 +122,7 @@ USER_CONFIG_FILE="\$HOME/.\$(basename "\$0").conf"
 #VERBOSE=0
 #DEBUG=0
 
+
 #
 # Functions
 #
@@ -139,7 +148,7 @@ print_usage () {
 
 
 #
-# Config files
+# Configuration files
 #
 
 [ -e "\$SYSTEM_CONFIG_FILE" ] && . "\$SYSTEM_CONFIG_FILE"
@@ -184,7 +193,6 @@ chmod +x "$SCRIPT_NAME"
 # Script manpage stub
 #
 
-SCRIPT_MANPAGE_NAME="$SCRIPT_NAME.1"
 printf "Creating manual page for script in %s\n" "$SCRIPT_MANPAGE_NAME"
 [ -e "$SCRIPT_MANPAGE_NAME" ] && die "File \"$SCRIPT_MANPAGE_NAME\" already exists"
 cat << EOF > "$SCRIPT_MANPAGE_NAME"
@@ -249,7 +257,6 @@ EOF
 # Config file manpage stub
 #
 
-CONFIG_FILE_MANPAGE_NAME="$SCRIPT_NAME.conf.5"
 printf "Creating manual page for configuration file in %s\n" "$CONFIG_FILE_MANPAGE_NAME"
 [ -e "$CONFIG_FILE_MANPAGE_NAME" ] && die "File \"$CONFIG_FILE_MANPAGE_NAME\" already exists"
 cat << EOF > "$CONFIG_FILE_MANPAGE_NAME"
