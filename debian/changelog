@@ -1,3 +1,10 @@
+shell-script-helper (1.5-1) unstable; urgency=medium
+
+  * New upstream release
+    - Don't die when script name contains spaces
+
+ -- Raphaël Halimi <raphael.halimi@gmail.com>  Sun, 10 Apr 2016 09:52:05 +0200
+
 shell-script-helper (1.4-2) unstable; urgency=medium
 
   * Add maintainer scripts to handle the doc symlink switch
