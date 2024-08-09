@@ -34,7 +34,7 @@ using it can be run with either bash or dash, but it may not be perfect.
 
 Credits
 -------
-Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+Copyright (c) 2024 Raphaël Halimi <raphael.halimi@gmail.com>
 
 License
 -------

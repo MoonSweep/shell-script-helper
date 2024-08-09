@@ -2,7 +2,7 @@
 
 # shell-script-helper-template v1.3
 # Create a shell script stub using shell-script-helper
-# Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+# Copyright (c) 2024 Raphaël Halimi <raphael.halimi@gmail.com>
 
 # Source shell-script-helper
 . /lib/shell-script-helper
