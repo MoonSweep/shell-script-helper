@@ -1,10 +1,10 @@
-# watch control file for uscan
-# See uscan(1) for format
+# watch control file for uscan.
+# See uscan(1) for format.
 
-# Compulsory line, this is a version 4 file
+# Compulsory line, this is a version 4 file.
 version=4
 
-# GitHub hosted projects
-opts="filenamemangle=s%(?:.*?)?v?(\d[\d.]*)\.tar\.gz%shell-script-helper-$1.tar.gz%" \
-   https://github.com/MoonSweep/shell-script-helper/tags \
-   (?:.*?/)?v?(\d[\d.]*)\.tar\.gz debian
+# GitHub hosted projects.
+opts="filenamemangle=s%(?:.*?)?v?(@ANY_VERSION@@ARCHIVE_EXT@)%shell-script-helper-$1%" \
+    https://github.com/MoonSweep/shell-script-helper/tags \
+    (?:.*?/)v?@ANY_VERSION@@ARCHIVE_EXT@ debian
