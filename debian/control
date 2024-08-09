@@ -11,8 +11,6 @@ Vcs-Git: https://github.com/MoonSweep/shell-script-helper.git
 Package: shell-script-helper
 Architecture: all
 Depends: ${misc:Depends}
-Breaks: raph-scripts (<< 1.3~), raph-shell-functions (<< 1.4-1~)
-Replaces: raph-scripts (<< 1.3~), raph-shell-functions (<< 1.4-1~)
 Description: Shell library - collection of functions commonly used in scripts
  This is a collection of shell functions commonly used in scripts (like
  checking if the script is run as root, ensuring that only one instance is
@@ -24,18 +22,7 @@ Description: Shell library - collection of functions commonly used in scripts
 Package: shell-script-helper-bin
 Architecture: all
 Depends: shell-script-helper, ${misc:Depends}
-Breaks: raph-shell-functions (<< 1.4-1~)
-Replaces: raph-shell-functions (<< 1.4-1~)
 Description: Tool to create templates for scripts that use shell-script-helper
  This package contains a tool to create templates for scripts that use the
  shell-script-helper library. It allows one to easily kickstart the creation of
  such scripts and their associated manpages.
-
-Package: raph-shell-functions
-Depends: shell-script-helper, shell-script-helper-bin, ${misc:Depends}
-Architecture: all
-Priority: extra
-Description: Transitional dummy package
- This is a transitional dummy package. It can safely be removed, but only once
- you have modified all your scripts to use the new library name, because the
- compatibility symlinks are provided by this package and not by the new package.

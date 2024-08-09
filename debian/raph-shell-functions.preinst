@@ -1,5 +1,0 @@
-#! /bin/sh -e
-
-dpkg-maintscript-helper dir_to_symlink /usr/share/doc/raph-shell-functions shell-script-helper 1.4-1~ raph-shell-functions -- "$@"
-
-#DEBHELPER#
