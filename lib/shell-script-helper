@@ -1,16 +1,15 @@
-# Shell Script Helper v1.3
+# shell-script-helper v1.3
 # Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
 # Licence: GPL-3+
-# vim: syntax=sh
 
 # Please read the shell-script-helper(3) manpage for documentation
 
-#
-# FUNCTIONS
-#
+###############################################################################
+# Functions - System
+###############################################################################
 
-
-# Exits with an error if the script is not run as root
+# Allow only root to run the script
+# ARGS: none
 root_only () {
   if [ "$(id -u)" != "0" ] ; then
     print_error "This script must be run as root, aborting."
@@ -18,8 +17,8 @@ root_only () {
   fi
 }
 
-
-# Locks the script, ensuring only one instance is run at a time
+# Allow only one instance of the script
+# ARGS: none
 lock_script () {
   local LOCK_FILE
   LOCK_FILE="/run/lock/$(basename "$0").pid"
@@ -37,8 +36,8 @@ lock_script () {
   echo $$ > "$LOCK_FILE"
 }
 
-
-# Unlocks the script
+# Remove lock file
+# ARGS: none
 unlock_script () {
   local LOCK_FILE
   LOCK_FILE="/run/lock/$(basename "$0").pid"
@@ -50,57 +49,8 @@ unlock_script () {
   fi
 }
 
-
-# Enables the verbose mode
-enable_verbose () {
-  VERBOSE=1
-  print_debug "Verbose mode enabled"
-}
-
-
-# Enables the debug mode
-enable_debug () {
-  DEBUG=1
-  print_debug "Debug mode enabled"
-}
-
-
-# Prints a string on STDOUT only if the VERBOSE variable is equal to 1
-# Args: one or more strings
-print_verbose () {
-  [ $VERBOSE -eq 1 ] && for MESSAGE in "$@" ; do
-    printf "%-8s%s\n" "[INFO]" "$MESSAGE"
-  done
-}
-
-
-# Prints a string on STDOUT only if the DEBUG variable is equal to 1.
-# Args: one or more strings
-print_debug () {
-  [ $DEBUG -eq 1 ] && for MESSAGE in "$@" ; do
-    printf "%-8s%s\n" "[DEBUG]" "$MESSAGE"
-  done
-}
-
-
-# Prints a string on STDERR with the [ERROR] prefix.
-# Args: one or more strings
-print_error () {
-  for MESSAGE in "$@" ; do
-    printf "%-8s%s\n" "[ERROR]" "$MESSAGE" 1>&2
-  done
-}
-
-
-# Helper to display options in the help message
-# Args: Exactly two strings (switch and description, e.g. "-v" "Verbose mode")
-print_option() {
-  printf "  %-20s%s\n" "$1" "$2"
-}
-
-
-# Deletes one or more files, with some checks and feedback
-# Args: One or more filenames
+# Delete one or more files, with some checks and feedback
+# ARGS: FILE...
 delete_files () {
   local FILE_TO_DELETE
   for FILE_TO_DELETE in "$@" ; do
@@ -109,27 +59,81 @@ delete_files () {
   done
 }
 
-
-# Prints a string and exits with a return code of  1
-# Args: Exactly one string, or none
+# Exit on fatal error
+# ARGS: [STRING]
 die () {
   print_error "${1:-"Unknown error"}, aborting."
   exit 1
 }
 
-
-# Automatically called when the script exits
+# Automatically executed when the script exits
+# ARGS: none
 quit () {
   command -v on_exit > /dev/null 2>&1 && on_exit
   unlock_script
 }
 
 
-#
-# TRAPS
-#
+###############################################################################
+# Functions - Output
+###############################################################################
 
-# Call the die function if the script is killed
+# Enable verbose mode
+# ARGS: none
+enable_verbose () {
+  VERBOSE=1
+  print_debug "Verbose mode enabled"
+}
+
+# Enable debug mode
+# ARGS: none
+enable_debug () {
+  DEBUG=1
+  print_debug "Debug mode enabled"
+}
+
+
+# Print strings on STDOUT only if verbose mode is enabled
+# ARGS: STRING...
+print_verbose () {
+  [ $VERBOSE -eq 1 ] && for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[INFO]" "$MESSAGE"
+  done
+}
+
+
+# Print strings on STDOUT only if debug mode is enabled
+# ARGS: STRING...
+print_debug () {
+  [ $DEBUG -eq 1 ] && for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[DEBUG]" "$MESSAGE"
+  done
+}
+
+
+# Print strings on STDERR with the [ERROR] prefix
+# ARGS: STRING...
+print_error () {
+  for MESSAGE in "$@" ; do
+    printf "%-8s%s\n" "[ERROR]" "$MESSAGE" 1>&2
+  done
+}
+
+
+# Display options in the help message
+# ARGS: OPTION OPTION_DESCRIPTION
+print_option() {
+  printf "  %-20s%s\n" "$1" "$2"
+}
+
+
+
+
+###############################################################################
+# Traps
+###############################################################################
+
+# Handle common signals gracefully
 trap 'die "SIGINT caught (interrupt from keyboard)"' 2
 trap 'die "SIGPIPE caught (write to pipe with no readers)"' 13
 trap 'die "SIGTERM caught (termination signal)"' 15
@@ -138,18 +142,18 @@ trap 'die "SIGTERM caught (termination signal)"' 15
 trap 'quit' 0
 
 
-#
-# VERBOSITY
-#
+###############################################################################
+# Verbosity
+###############################################################################
 
 # These variables are meant to be changed with switches
 VERBOSE=0
 DEBUG=0
 
 
-#
-# EXAMPLES
-#
+###############################################################################
+# Examples
+###############################################################################
 
 # Print help
 #print_help () {
@@ -169,3 +173,5 @@ DEBUG=0
 #    *) print_help ; exit 1 ;;
 #  esac
 #done ; shift $((OPTIND-1))
+
+# vim: ft=sh
