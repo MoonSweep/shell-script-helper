@@ -1,15 +1,18 @@
-# shell-script-helper
+shell-script-helper
+===================
 
-## Description
+Description
+-----------
 This is a collection of shell functions commonly used in scripts, like checking
 if the script is run as root, ensuring that only one instance is running at the
 same time, print some messages only in verbose mode, trapping the most common
 signals to exit carefully in case something goes wrong...
 
-## Usage
+Usage
+-----
 It's meant to be sourced from a shell script, like:
 
-    . /lib/shell-script-helper
+    . /usr/lib/shell-script-helper
 
 Then you can call the functions you need in your script. Please read the
 shell-script-helper(3) manpage to learn exactly what functions are included,
@@ -24,13 +27,16 @@ Finally, you can find a small demo script called `shell-script-helper-demo`
 located in the `examples` directory. It's safe to play with; run it with the
 `-h` switch to see what options it accepts.
 
-## POSIX compliance
+POSIX compliance
+----------------
 Efforts are made to make this library POSIX-compliant, so that the scripts
 using it can be run with either bash or dash, but it may not be perfect.
 
-## Credits
-Copyright (c) 2016 Raphaël Halimi <raphael.halimi@gmail.com>
+Credits
+-------
+Copyright (c) 2024 Raphaël Halimi <raphael.halimi@gmail.com>
 
-## License
+License
+-------
 Everything in this distribution is licensed under the GNU General Public
 License version 3 or later.
