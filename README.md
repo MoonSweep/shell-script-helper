@@ -12,7 +12,7 @@ Usage
 -----
 It's meant to be sourced from a shell script, like:
 
-    . /lib/shell-script-helper
+    . /usr/lib/shell-script-helper
 
 Then you can call the functions you need in your script. Please read the
 shell-script-helper(3) manpage to learn exactly what functions are included,
